@@ -1,0 +1,7 @@
+div.container
+	div.well
+		h2 Your ready to develop with...
+		ul
+			li(ng-repeat='lib in libs')
+				p  {{lib.name}} - version:{{lib.version}}
+		small More libraries available in public/js/lib

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+	nav.navbar.navbar-default(role='navigation')
+		div.navbar-header
+			a.navbar-brand(href='#') ngExpress
+		div.navbar-collapse(data-collapse='isCollapsed')
+			ul.nav.navbar-nav.navbar-right
+				li
+					a(href='#/') Home
+				li
+					a(href='#/view2') View 2
+	div(ng-view)

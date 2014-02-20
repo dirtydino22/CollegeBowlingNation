@@ -1,0 +1,10 @@
+[90mGET / [32m200 [90m282ms - 946b[0m
+[90mGET /lib/angular/angular.min.js [32m200 [90m7ms - 97.38kb[0m
+[90mGET /css/app.css [32m200 [90m5ms - 110b[0m
+[90mGET /lib/bootstrap/dist/css/bootstrap.min.css [32m200 [90m10ms - 100.49kb[0m
+[90mGET /lib/angular/angular-route.min.js [32m200 [90m5ms - 3.63kb[0m
+[90mGET /js/controllers/app.js [32m200 [90m5ms - 195b[0m
+[90mGET /js/app.js [32m200 [90m5ms - 534b[0m
+[90mGET /js/controllers/index.js [32m200 [90m1ms - 302b[0m
+[90mGET /partials/index [32m200 [90m9ms - 281b[0m
+[90mGET /partials/view2 [32m200 [90m20ms - 49b[0m
