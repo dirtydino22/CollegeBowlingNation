@@ -1,0 +1,68 @@
+<!doctype html>
+<html data-ng-app="app" id="ng-app">
+    <head>
+        <meta charset="utf-8">
+        <meta name="fragment" content="!">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>College Bowling Nation</title>
+        <meta name="author" content="">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/app.css">
+        <!--]if lte IE 8]>
+            <script src="libs/ui-utils/modules/ie-shiv/ie-shiv.js"></script>
+        <![endif]-->
+        <!--[if lt IE 9]>
+            <script src="libs/html5shiv/src/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" data-ng-controller="NavigationCtrl">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-ng-click="isCollapsed = !isCollapsed">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">CBN</a>
+                </div>
+                <div class="collapse navbar-collapse" data-collapse="isCollapsed">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/">Home</a></li>
+                        <li><a href="#/rankings">Rankings</a></li>
+        				<li><a href="#">Statistics</a></li>
+                        <li><a href="#/prospects">Prospective Bowlers</a></li>
+        				<li><a href="#">Blog</a></li>
+        				<li><a href="" ng-click="openContactModal()">Contact Us</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="" data-ng-click="openLoginModal()">Login &#47; Register</a>
+                        </li>
+                    </ul>
+                </div>
+             </div>
+        </nav>
+
+	    <section data-ng-view="" class="view"></section>
+
+        <script src="libs/angular/angular.min.js"></script>
+        <script src="libs/angular/angular-route.min.js"></script>
+        <script src="libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/controllers.js"></script>
+        <script src="js/controllers/controller.main.js"></script>
+        <script src="js/controllers/controller.navigation.js"></script>
+        <script src="js/controllers/controller.login.js"></script>
+        <script src="js/controllers/controller.contact.js"></script>
+        <script src="js/controllers/controller.rankings.js"></script>
+        <script src="js/controllers/controller.prospects.js"></script>
+        <script src="js/services/services.js"></script>
+        <script src="js/directives/directives.js"></script>
+        <script src="js/directives/directive.focus.js"></script>
+    </body>
+</html>

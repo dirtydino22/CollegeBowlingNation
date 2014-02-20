@@ -1,0 +1,236 @@
+<div class="container">
+	<h2>Prospective Bowlers</h2>
+	<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3>Contact A Coach</h3>
+				</div>
+				<div class="panel-body">
+				<form name="prospectForm" novalidate ng-submit="sendProspect()">
+					<fieldset class="col-xs-12 col-md-6 pull-left">
+						<legend>Personal Information</legend>
+								<div class="form-group">
+									<span class="sr-only">Full Name</span>
+									<input name="fullName"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.fullName"
+										placeholder="Full Name"
+										ng-minlength=2
+										required />
+								</div>
+								<div class="form-group">
+									<select class="form-control"
+										ng-model="prospect.gender"
+										ng-options="gender.type for gender in genders">
+										<option value="">--Choose Your Gender--</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Email</span>
+									<input name="email"
+										type="email"
+										class="form-control" 
+										ng-model="prospect.email"
+										placeholder="Email"
+										ng-minlength=5
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Street Address</span>
+									<input name="address"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.address"
+										placeholder="Street Address"
+										ng-minlength=5
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">City</span>
+									<input name="city"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.city"
+										placeholder="City"
+										ng-minlength=2
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">State</span>
+									<input name="state"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.state"
+										placeholder="State"
+										ng-minlength=2
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Zip Code</span>
+									<input name="zipcode"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.zipcode"
+										placeholder="Zip Code"
+										ng-minlength=5
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Country</span>
+									<input name="country"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.country"
+										placeholder="Country ( if not US )"
+										ng-minlength=5 />
+								</div>
+					</fieldset>
+					<fieldset class="col-xs-12 col-md-6 pull-right">
+						<legend>Academic Information</legend>
+								<div class="form-group">
+									<span class="sr-only">HighSchool</span>
+									<input name="highschool"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.highschool"
+										placeholder="High School"
+										ng-minlength=5
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Classification</span>
+									<input name="classification"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.classification"
+										placeholder="Classification"
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">City</span>
+									<input name="schoolCity"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.schoolCity"
+										placeholder="City"
+										ng-minlength=2
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">State</span>
+									<input name="schoolState"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.state"
+										placeholder="State"
+										ng-minlength=2
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Highschool GPA</span>
+									<input name="gpa"
+										type="number"
+										class="form-control" 
+										ng-model="prospect.gpa"
+										placeholder="Highschool GPA"
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">SAT/ACT Score</span>
+									<input name="act"
+										type="number"
+										class="form-control" 
+										ng-model="prospect.act"
+										placeholder="SAT/ACT Score"
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Intended Major</span>
+									<input name="major"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.major"
+										placeholder="Intended Major"
+										required />
+								</div>
+								<div class="form-group">
+									<select class="form-control"
+										ng-model="prospect.admissionStatus"
+										ng-options="adStat.type for adStat in admissionStatus">
+										<option value="">--College Admission Status--</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<select class="form-control"
+										ng-model="prospect.collegeClass"
+										ng-options="class.type for class in collegeClass">
+										<option value="">--I Will Be A--</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<select class="form-control"
+										ng-model="prospect.financialAid"
+										ng-options="aid.applied for aid in financialAid">
+										<option value="">--I Have Applied For Financial Aid--</option>
+									</select>
+								</div>
+					</fieldset>
+					<fieldset class="col-xs-12 col-md-6">
+						<legend>Bowling Information</legend>
+								<div class="form-group">
+									<select class="form-control"
+										ng-model="prospect.bowlStyle"
+										ng-options="style.type for style in bowlStyle">
+										<option value="">--I Bowl With My--</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Current Average</span>
+									<input name="currentAverage"
+										type="number"
+										class="form-control" 
+										ng-model="prospect.currentAverage"
+										placeholder="Current Average"
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">High Average</span>
+									<input name="highAverage"
+										type="number"
+										class="form-control" 
+										ng-model="prospect.highAverage"
+										placeholder="High Average"
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">School Of Intrest</span>
+									<input name="schoolOfIntrest"
+										type="text"
+										class="form-control" 
+										ng-model="prospect.schoolOfIntrest"
+										placeholder="School Of Intrest"
+										required />
+								</div>
+								<div class="form-group">
+									<span class="sr-only">Email Of College Coach</span>
+									<input name="coachEmail"
+										type="email"
+										class="form-control" 
+										ng-model="prospect.coachEmail"
+										placeholder="Email"
+										ng-minlength=5
+										required />
+								</div>
+								<div class="form-group">
+									<textarea name="message"
+										class="form-control" 
+										ng-model="prospect.message"
+										placeholder="Message">
+									</textarea>
+								</div>
+					</fieldset>
+					<button class="btn btn-primary pull-right" style="margin-right:1em;">Send Form</button>
+				</div>
+		</form>
+	</div>
+</div>

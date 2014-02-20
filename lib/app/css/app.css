@@ -1,0 +1,39 @@
+/* Index.html Styles */
+.view {
+	position: relative;
+	top: 5em;
+}
+
+nav {
+    -moz-box-shadow: 0px 2px 6px rgba(51, 51, 51, 0.65);
+    -webkit-box-shadow: 0px 2px 6px rgba(51, 51, 51, 0.65);
+    box-shadow: 0px 2px 6px rgba(51, 51, 51, 0.65);
+    -ms-filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=2,Color=#a5333333,Positive=true)";
+    filter: progid: DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=2, Color=#a5333333, Positive=true);
+}
+
+/* Main.html Styles */
+
+.banner {
+	position: relative;
+	top: -1.5em;
+	margin-bottom: -1.5em;
+}
+
+.about {
+	background-color: #005CE6;
+}
+
+.about-text {
+	padding: 2em 0 1em;
+	margin: 0 2em;
+	color: #FFFFFF;
+	text-align: justify;
+}
+
+/* Media Queries */
+@media screen and (min-width: 768px) {
+	.about-text {
+		margin: 0 8em;
+	}
+}
