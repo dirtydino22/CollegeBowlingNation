@@ -34,14 +34,15 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#/">Home</a></li>
                         <li><a href="#/rankings">Rankings</a></li>
-        				<li><a href="#">Statistics</a></li>
+        				<li><a href="#/admin">Statistics</a></li>
                         <li><a href="#/prospects">Prospective Bowlers</a></li>
         				<li><a href="#">Blog</a></li>
         				<li><a href="" ng-click="openContactModal()">Contact Us</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="" data-ng-click="openLoginModal()">Login &#47; Register</a>
+                            <a ng-show="!user" href="" data-ng-click="openLoginModal()">Login &#47; Register</a>
+                            <a ng-show="user" href="#" data-ng-click="logout()">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -61,7 +62,9 @@
         <script src="js/controllers/controller.contact.js"></script>
         <script src="js/controllers/controller.rankings.js"></script>
         <script src="js/controllers/controller.prospects.js"></script>
+        <script src="js/controllers/controller.admin.js"></script>
         <script src="js/services/services.js"></script>
+        <script src="js/services/service.auth.js"></script>
         <script src="js/directives/directives.js"></script>
         <script src="js/directives/directive.focus.js"></script>
     </body>

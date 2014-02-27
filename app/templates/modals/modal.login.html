@@ -11,7 +11,7 @@
 			<input type="text" name="lastName" class="form-control" ng-model="user.lastName" placeholder="Last Name" />
 		</div>
 		<div class="form-group">
-			<input type="text" name="address1" class="form-control" ng-model="user.address1" placeholder="Address 1" />
+			<input type="text" name="address" class="form-control" ng-model="user.address1" placeholder="Address 1" />
 		</div>
 		<div class="form-group">
 			<input type="text" name="address2" class="form-control" ng-model="user.address2" placeholder="Address 2" />
@@ -32,12 +32,13 @@
 			<input type="text" name="university" class="form-control" ng-model="user.university" placeholder="University" />
 		</div>
 		<div class="form-group">
-			<select class="form-control" ng-model="user.gender" ng-options="gender.type for gender in genders">
-				<option value="">Gender</option>
-			</select>
+			<input type="text" name="access" class="form-control" ng-model="user.access" placeholder="Access" />
 		</div>
 		<div class="form-group">
 			<input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Email" />
+		</div>
+		<div class="form-group">
+			<input type="text" name="username" class="form-control" ng-model="user.username" placeholder="Username" />
 		</div>
 		<div class="form-group">
 			<input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Password" />
@@ -52,29 +53,29 @@
 		data-ng-hide="createMode"
 		novalidate >
 		<div class="form-group">
-			<input type="email" 
-				name="email" 
+			<input type="text" 
+				name="username" 
 				class="form-control" 
-				ng-model="user.email" 
-				placeholder="Email"
+				ng-model="loginUser.username" 
+				placeholder="Username"
 				data-ng-minlength=3
 				required/>
 			<div class="error"
-				ng-show="loginForm.email.$dirty &&
-					loginForm.email.$invalid">
+				ng-show="loginForm.username.$dirty &&
+					loginForm.username.$invalid">
 				<small class="error"
-					ng-show="loginForm.email.$error.email">
-					That is not a valid email.
+					ng-show="loginForm.username.$error.username">
+					That is not a valid username.
 				</small>
 				
 				<small class="error"
-					ng-show="loginForm.email.$error.required">
-					Your email is required.
+					ng-show="loginForm.username.$error.required">
+					Your username is required.
 				</small>
 				
 				<small class="error"
-					ng-show="loginForm.email.$error.minlength">
-					Your email must be at least 3 characters.
+					ng-show="loginForm.username.$error.minlength">
+					Your username must be at least 3 characters.
 				</small>
 				
 			</div>	
@@ -84,7 +85,7 @@
 			<input type="password"
 				name="password" 
 				class="form-control" 
-				ng-model="user.password" 
+				ng-model="loginUser.password" 
 				placeholder="Password"
 				data-ng-minlength=3
 				required />

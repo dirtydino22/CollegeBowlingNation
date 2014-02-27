@@ -10,6 +10,7 @@
 		'app.controller.login',
 		'app.controller.contact',
 		'app.controller.rankings',
-		'app.controller.prospects'
+		'app.controller.prospects',
+		'app.controller.admin'
 	]);
 }(angular));
