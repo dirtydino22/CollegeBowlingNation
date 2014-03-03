@@ -1,42 +1,23 @@
-[90mPOST /logout [32m200 [90m7ms - 2b[0m
-[90mGET /img/banner.gif [36m304 [90m3ms[0m
-[90mGET / [32m200 [90m19ms - 3.41kb[0m
-[90mGET /libs/bootstrap/dist/css/bootstrap.min.css [36m304 [90m2ms[0m
-[90mGET /css/app.css [36m304 [90m2ms[0m
-[90mGET /libs/angular/angular.min.js [36m304 [90m3ms[0m
-[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m2ms[0m
-[90mGET /libs/angular/angular-route.min.js [36m304 [90m1ms[0m
-[90mGET /js/app.js [36m304 [90m2ms[0m
-[90mGET /js/controllers/controllers.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.main.js [36m304 [90m3ms[0m
-[90mGET /js/controllers/controller.navigation.js [36m304 [90m3ms[0m
-[90mGET /js/controllers/controller.contact.js [36m304 [90m2ms[0m
-[90mGET /js/controllers/controller.login.js [36m304 [90m2ms[0m
-[90mGET /js/controllers/controller.rankings.js [36m304 [90m2ms[0m
-[90mGET /js/controllers/controller.prospects.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.admin.js [36m304 [90m1ms[0m
-[90mGET /js/services/services.js [36m304 [90m1ms[0m
-[90mGET /js/directives/directives.js [36m304 [90m3ms[0m
-[90mGET /js/directives/directive.focus.js [36m304 [90m2ms[0m
-[90mGET /js/services/service.auth.js [32m200 [90m5ms - 2.27kb[0m
-[90mGET /libs/angular/angular.min.js.map [36m304 [90m0ms[0m
-[90mGET /libs/angular/angular-route.min.js.map [36m304 [90m1ms[0m
-[90mGET /templates/main.html [32m200 [90m2ms - 854b[0m
-[90mGET /img/banner.gif [36m304 [90m1ms[0m
-[90mGET /libs/angular/angular.js [36m304 [90m0ms[0m
-[90mGET /libs/angular/MINERR_ASSET [33m404 [90m1ms[0m
-[90mGET /libs/angular/angular-route.js [36m304 [90m0ms[0m
-[90mGET /templates/modals/modal.login.html [36m304 [90m1ms[0m
-[90mPOST /login [32m200 [90m1089ms - 1.4kb[0m
-[90mGET /loggedin [36m304 [90m3ms[0m
-[90mGET /templates/admin.html [32m200 [90m3ms - 446b[0m
-[90mPOST /logout [32m200 [90m2ms - 2b[0m
-[90mGET /img/banner.gif [36m304 [90m1ms[0m
-[90mGET /loggedin [32m200 [90m2ms - 1b[0m
-[90mGET /img/banner.gif [36m304 [90m0ms[0m
-[90mPOST /login [33m401 [90m1062ms[0m
-[90mGET /img/banner.gif [36m304 [90m1ms[0m
-[90mPOST /login [32m200 [90m1068ms - 1.4kb[0m
-[90mGET /loggedin [32m200 [90m3ms - 1.4kb[0m
-[90mPOST /api/coaches/530e5ffdec16ef0000000005 [32m200 [90m32112ms[0m
-[90mPOST /api/coaches/530e5ffdec16ef0000000005 [32m200 [90m6443ms[0m
+[90mGET / [32m200 [90m7ms - 3.41kb[0m
+[90mGET /css/app.css [32m200 [90m10ms - 785b[0m
+[90mGET /libs/angular/angular-route.min.js [32m200 [90m5ms - 3.63kb[0m
+[90mGET /js/app.js [32m200 [90m5ms - 1.6kb[0m
+[90mGET /libs/angular/angular.min.js [32m200 [90m9ms - 97.38kb[0m
+[90mGET /libs/bootstrap/dist/css/bootstrap.min.css [32m200 [90m7ms - 100.49kb[0m
+[90mGET /js/controllers/controllers.js [32m200 [90m7ms - 336b[0m
+[90mGET /js/controllers/controller.main.js [32m200 [90m6ms - 163b[0m
+[90mGET /js/controllers/controller.navigation.js [32m200 [90m5ms - 906b[0m
+[90mGET /js/controllers/controller.login.js [32m200 [90m5ms - 728b[0m
+[90mGET /js/controllers/controller.contact.js [32m200 [90m2ms - 288b[0m
+[90mGET /js/controllers/controller.rankings.js [32m200 [90m4ms - 288b[0m
+[90mGET /js/controllers/controller.prospects.js [32m200 [90m4ms - 674b[0m
+[90mGET /js/controllers/controller.admin.js [32m200 [90m4ms - 657b[0m
+[90mGET /js/services/services.js [32m200 [90m4ms - 108b[0m
+[90mGET /js/services/service.auth.js [32m200 [90m4ms - 2.27kb[0m
+[90mGET /js/directives/directives.js [32m200 [90m2ms - 113b[0m
+[90mGET /js/directives/directive.focus.js [32m200 [90m1ms - 627b[0m
+[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [32m200 [90m31ms - 51.14kb[0m
+[90mGET /templates/main.html [32m200 [90m19ms - 854b[0m
+[90mGET /favicon.ico [33m404 [90m1ms[0m
+[90mGET /img/banner.gif [32m200 [90m2ms - 17.74kb[0m
+[90mGET /templates/modals/modal.login.html [32m200 [90m10ms - 4.19kb[0m
