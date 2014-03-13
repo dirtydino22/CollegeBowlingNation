@@ -8,16 +8,18 @@
 			'$timeout',
 			function ($http, $location, $q, $timeout) {
 				var auth = {};
+				// config
 				auth.user = {
 					username: false,
 					access: false,
 					id: false
 				};
+				auth.message = false;
 
-				auth.username = false;
-				auth.userAccess = false;
-				auth.userId = false;
-
+				/**
+				 * login
+				 * handles logging in a user
+				 */
 				auth.login = function (username, password, cb) {
 					$http.post('/login', {
 						username: username,
@@ -27,24 +29,34 @@
 						auth.user.username = user.username;
 						auth.user.access = user.access;
 						auth.user.id = user._id;
+						auth.message = 'Authentication successful.';
 						cb();
 					})
 					.error(function(err) {
-						console.log('Error: ', err);
+						auth.message = err;
 					});
 				};
+				/**
+				 * logout
+				 * handles logging a user out
+				 */
 				auth.logout = function (cb) {
 					$http.post('/logout')
 						.success(function() {
 							auth.user.username = false;
 							auth.user.access = false;
 							auth.user.id = false;
+							auth.message = 'You are logged out.';
 							cb();
 						})
 						.error(function(err) {
-							console.log('Error: ', err);
+							auth.message = err;
 						});
 				};
+				/**
+				 * createUser
+				 * handles creating a new user
+				 */
 				auth.createUser = function (user, cb) {
 					$http.post('/register', {
 						username: user.username,
@@ -65,9 +77,13 @@
 						cb();
 					})
 					.error(function(err) {
-						console.log('Error :', err);
+						auth.message = err;
 					});
 				};
+				/**
+				 * isLoggedIn
+				 * checks if user is logged in
+				 */
 				auth.isLoggedIn = function() {
 					var defered = $q.defer();
 					$http.get('/loggedin')
@@ -86,6 +102,10 @@
 						});
 					return defered.promise;
 				};
+				/**
+				 * login
+				 * updates a users password
+				 */
 				auth.updatePassword = function(id, password, cb) {
 					console.log('updatePassword(): ' + id + ' ' + password);
 					$http.post('/api/coaches/' + id, {
@@ -93,9 +113,12 @@
 					})
 					.success(function() {
 						cb();
+					})
+					.error(function(err) {
+						auth.message = err;
 					});
 				};
-				
+				// return auth object.
 				return auth;
 		}]);
 }(angular));

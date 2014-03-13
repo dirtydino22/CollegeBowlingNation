@@ -1,12 +1,40 @@
-<p>{{username}}</p>
-<p>{{userAccess}}</p>
-<p>{{userId}}</p>
-<form name="updatePasswordForm" ng-submit="updatePassword()">
-<div class="form-group">
-	<input class="form-control" type="password" ng-model="user.password" placeholder="password" />
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2>Pending Users</h2>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<tr>
+					<th>Username</th>
+					<th>Accept User</th>
+					<th>Accept Admin</th>
+					<th>Decline User</th>
+				</tr>
+				<tr ng-repeat="user in tempUsers">
+					<td>{{user.username}}</td>
+					<td><button type="button" class="btn btn-success" ng-click="acceptUser($index)"><i class="glyphicon glyphicon-plus-sign"></i></button></td>
+					<td><button type="button" class="btn btn-success" ng-click="acceptAdmin($index)"><i class="glyphicon glyphicon-plus-sign"></i></button></td>
+					<td><button type="button" class="btn btn-danger" ng-click="declineUser($index)"><i class="glyphicon glyphicon-minus-sign"></i></button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2>Users</h2>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<tr>
+					<th>Username</th>
+					<th>Remove User</th>
+				</tr>
+				<tr ng-repeat="user in users">
+					<td>{{user.username}}</td>
+					<td><button type="button" class="btn btn-danger" ng-click="removeUser($index)"><i class="glyphicon glyphicon-minus-sign"></i></button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </div>
-<div class="form-group">
-	<input class="form-control" type="password" ng-model="user.confirm" placeholder="password" />
-</div>
-<button class="btn btn-primary" type="submit">Submit</button>
-</form>
