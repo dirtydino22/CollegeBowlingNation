@@ -1,68 +1,35 @@
-[90mGET / [36m304 [90m7ms[0m
+[90mGET / [36m304 [90m8ms[0m
 [90mGET /css/app.css [36m304 [90m4ms[0m
-[90mGET /libs/angular/angular-route.min.js [36m304 [90m4ms[0m
-[90mGET /libs/bootstrap/dist/css/bootstrap.min.css [36m304 [90m3ms[0m
-[90mGET /libs/offline/offline-theme-chrome.css [36m304 [90m2ms[0m
-[90mGET /libs/angular/angular.min.js [36m304 [90m2ms[0m
-[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m1ms[0m
-[90mGET /js/app.js [36m304 [90m2ms[0m
+[90mGET /libs/angular/angular-route.min.js [36m304 [90m76ms[0m
+[90mGET /libs/offline/offline-theme-chrome.css [36m304 [90m79ms[0m
+[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m76ms[0m
+[90mGET /libs/bootstrap/dist/css/bootstrap.min.css [36m304 [90m78ms[0m
+[90mGET /libs/angular/angular.min.js [36m304 [90m77ms[0m
+[90mGET /js/app.js [32m200 [90m82ms - 6.98kb[0m
 [90mGET /js/controllers/controllers.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.main.js [36m304 [90m3ms[0m
-[90mGET /js/controllers/controller.navigation.js [36m304 [90m2ms[0m
-[90mGET /js/controllers/controller.login.js [36m304 [90m0ms[0m
-[90mGET /js/controllers/controller.contact.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.rankings.js [36m304 [90m0ms[0m
+[90mGET /js/controllers/controller.main.js [36m304 [90m4ms[0m
+[90mGET /js/controllers/controller.navigation.js [36m304 [90m4ms[0m
+[90mGET /js/controllers/controller.login.js [36m304 [90m1ms[0m
+[90mGET /js/controllers/controller.contact.js [36m304 [90m2ms[0m
+[90mGET /js/controllers/controller.rankings.js [36m304 [90m2ms[0m
 [90mGET /js/controllers/controller.prospects.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.admin.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.newGame.js [36m304 [90m0ms[0m
-[90mGET /js/controllers/controller.bowler.js [36m304 [90m2ms[0m
-[90mGET /js/services/services.js [36m304 [90m3ms[0m
-[90mGET /js/services/service.auth.js [36m304 [90m2ms[0m
-[90mGET /js/services/service.socket.js [36m304 [90m2ms[0m
-[90mGET /js/services/service.localStorage.js [36m304 [90m1ms[0m
-[90mGET /js/services/service.online.js [36m304 [90m1ms[0m
-[90mGET /js/directives/directives.js [36m304 [90m2ms[0m
-[90mGET /js/directives/directive.focus.js [33m404 [90m1ms[0m
-[90mGET /js/services/service.game.js [32m200 [90m5ms - 425b[0m
-[90mGET / [36m304 [90m3ms[0m
-[90mGET /libs/bootstrap/dist/css/bootstrap.min.css [36m304 [90m2ms[0m
-[90mGET /css/app.css [36m304 [90m0ms[0m
-[90mGET /libs/offline/offline-theme-chrome.css [36m304 [90m2ms[0m
-[90mGET /libs/angular/angular.min.js [36m304 [90m2ms[0m
-[90mGET /libs/angular/angular-route.min.js [36m304 [90m1ms[0m
-[90mGET /js/app.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controllers.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.main.js [36m304 [90m1ms[0m
-[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.navigation.js [36m304 [90m3ms[0m
-[90mGET /js/controllers/controller.login.js [36m304 [90m3ms[0m
-[90mGET /js/controllers/controller.contact.js [36m304 [90m3ms[0m
-[90mGET /js/controllers/controller.rankings.js [36m304 [90m1ms[0m
-[90mGET /js/controllers/controller.prospects.js [36m304 [90m2ms[0m
 [90mGET /js/controllers/controller.admin.js [36m304 [90m2ms[0m
 [90mGET /js/controllers/controller.newGame.js [36m304 [90m2ms[0m
 [90mGET /js/controllers/controller.bowler.js [36m304 [90m1ms[0m
 [90mGET /js/services/services.js [36m304 [90m3ms[0m
-[90mGET /js/services/service.auth.js [36m304 [90m2ms[0m
-[90mGET /js/services/service.socket.js [36m304 [90m2ms[0m
-[90mGET /js/services/service.localStorage.js [36m304 [90m1ms[0m
-[90mGET /js/services/service.online.js [36m304 [90m2ms[0m
+[90mGET /js/services/service.socket.js [36m304 [90m3ms[0m
+[90mGET /js/services/service.game.js [36m304 [90m0ms[0m
 [90mGET /js/directives/directives.js [36m304 [90m1ms[0m
-[90mGET /js/directives/directive.focus.js [33m404 [90m1ms[0m
-[90mGET /js/services/service.game.js [32m200 [90m3ms - 425b[0m
-[90mGET /templates/main.html [32m200 [90m1ms - 888b[0m
-[90mGET /img/banner.gif [36m304 [90m1ms[0m
-[90mGET /templates/modals/modal.login.html [36m304 [90m2ms[0m
-[90mPOST /login [32m200 [90m910ms - 1.39kb[0m
+[90mGET /js/services/service.auth.js [32m200 [90m6ms - 4.58kb[0m
+[90mGET /js/directives/directive.focus.js [33m404 [90m2ms[0m
+[90mGET /js/services/service.localStorage.js [32m200 [90m4ms - 3.33kb[0m
+[90mGET /js/services/service.online.js [32m200 [90m4ms - 1.02kb[0m
+[90mGET /templates/main.html [32m200 [90m22ms - 888b[0m
+[90mGET /img/banner.gif [36m304 [90m0ms[0m
+[90mGET /templates/modals/modal.login.html [36m304 [90m1ms[0m
+[90mPOST /login [32m200 [90m931ms - 1.39kb[0m
 [90mGET /loggedin [36m304 [90m4ms[0m
-[90mGET /templates/admin.html [36m304 [90m6ms[0m
-[90mGET /api/users [36m304 [90m4ms[0m
-[90mGET /api/tempUsers [32m200 [90m4ms - 2b[0m
-[90mGET /api/bowlers [32m200 [90m5ms - 394b[0m
-[90mGET /libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff [36m304 [90m3ms[0m
-[90mDELETE /api/bowlers/5325cd53f671d00000f58756 [32m200 [90m5ms - 4b[0m
-[90mGET /loggedin [36m304 [90m2ms[0m
-[90mGET /templates/bowler.html [32m200 [90m117ms - 735b[0m
-[90mGET /api/bowlers [32m200 [90m6ms - 296b[0m
+[90mGET /templates/bowler.html [32m200 [90m5ms - 735b[0m
+[90mGET /api/bowlers [32m200 [90m5ms - 296b[0m
 [90mGET /loggedin [36m304 [90m3ms[0m
-[90mGET /templates/newgame.html [36m304 [90m6ms[0m
+[90mGET /templates/newgame.html [32m200 [90m29ms - 6.83kb[0m
