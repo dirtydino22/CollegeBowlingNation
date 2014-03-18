@@ -5,6 +5,8 @@
 			'$window',
 			function($window) {
 				var online = {};
+				online.requests = [];
+
 				/**
 				 * check
 				 * returns a boolean value specific to whether the user is online
@@ -17,6 +19,7 @@
 						return false;
 					}
 				};
+				
 				/**
 				 * on
 				 * creates an eventListener on the window
@@ -25,7 +28,7 @@
 				online.on = function(event, handler) {
 					return $window.addEventListener(event, handler)
 				};
-				online.requests = [];
+				
 				// return online object.
 				return online;
 			}

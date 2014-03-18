@@ -3,7 +3,10 @@
 	angular.module('app.controller.prospects', [])
 		.controller('ProspectsCtrl', [
 			'$scope',
-			function ($scope) {
+			'$http',
+			function ($scope, $http) {
+				var userArray = [];
+				
 				$scope.genders = [
 					{type: 'Male'},
 					{type: 'Female'}
@@ -25,6 +28,24 @@
 					{applied: 'Yes'},
 					{applied: 'No'}
 				];
+
+				// returns a list of coaches for select element
+				$http.get('api/users')
+					.success(function(users) {
+						console.log(users);
+						var i;
+						for (i = 0; i < users.length; i++) {
+							userArray.push({
+								desc: users[i].firstName + ' ' + users[i].lastName + ' : ' + users[i].university + ' : ' + users[i].email,
+								name: users[i].firstName + users[i].lastName,
+								email: users[i].email
+							});
+						}
+						$scope.coaches = userArray;
+					}).
+					error(function(err) {
+						console.log(err);
+					});
 			}
 		]);
 }(angular));

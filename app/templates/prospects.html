@@ -213,13 +213,11 @@
 								</div>
 								<div class="form-group">
 									<span class="sr-only">Email Of College Coach</span>
-									<input name="coachEmail"
-										type="email"
-										class="form-control" 
-										ng-model="prospect.coachEmail"
-										placeholder="Email"
-										ng-minlength=5
-										required />
+									<select class="form-control"
+										ng-model="prospect.bowlStyle"
+										ng-options="coach.desc for coach in coaches">
+										<option value="">--Coach You Would Like To Contact--</option>
+									</select>
 								</div>
 								<div class="form-group">
 									<textarea name="message"

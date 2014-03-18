@@ -11,6 +11,8 @@
 		'app.controller.contact',
 		'app.controller.rankings',
 		'app.controller.prospects',
-		'app.controller.admin'
+		'app.controller.admin',
+		'app.controller.newGame',
+		'app.controller.bowler'
 	]);
 }(angular));

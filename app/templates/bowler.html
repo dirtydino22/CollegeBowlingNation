@@ -1,0 +1,31 @@
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<input 
+				class="col-xs-6 pull-right"
+				ng-model="search"
+				placeholder="Search Bowlers"
+			/>
+			<h2>Choose A Bowler</h2>
+		</div>
+		<div class="panel-body">
+			<ul>
+				<li ng-repeat="bowler in bowlers | filter:search">
+					<a href="#/newgame/{{bowler._id}}">{{bowler.name}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="well">
+		<form name="newBowlerForm" ng-submit="createBowler()">
+			<div class="form-group">
+				<input 
+					class="form-control"
+					ng-model="newBowler"
+					placeholder="New Bowler's Name"
+				/>
+			</div>
+			<button class="btn btn-primary" type="submit">Create Bowler</button>
+		</form>
+	</div>
+</div>

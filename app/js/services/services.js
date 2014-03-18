@@ -4,6 +4,7 @@
 		'app.service.auth',
 		'app.service.socket',
 		'app.service.localStorage',
-		'app.service.online'
+		'app.service.online',
+		'app.service.game'
 	]);
 }(angular));

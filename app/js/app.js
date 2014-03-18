@@ -25,12 +25,17 @@
                         // check if url is a request to the api
                         if (config.url.indexOf('api/') === -1) {
                             // if not return config
+                            
                             return config || $q.when(config);
                         }
                         /* if request to api, then push the url 
                          * string to Online.requests array 
                          */
-                        return Online.requests.push(config.url);
+                        return Online.requests.push({
+                        	url: config.url,
+                        	method: config.method,
+                        	data: config.data
+                        });
                     }
                 },
                 // intercept response
@@ -70,6 +75,24 @@
                     }
                 }
             })
+            .when('/newgame', {
+                templateUrl: 'templates/bowler.html',
+                controller: 'BowlerCtrl',
+                resolve: {
+                    auth: function(Auth) {
+                        Auth.isLoggedIn();
+                    }
+                }
+            })
+            .when('/newgame/:id', {
+                templateUrl: 'templates/newgame.html',
+                controller: 'NewGameCtrl',
+                resolve: {
+                    auth: function(Auth) {
+                        Auth.isLoggedIn();
+                    }
+                }
+            })
     		.otherwise({
     			redirectTo: '/'
     		});
@@ -77,16 +100,42 @@
     .run(function($http, $q, Online, socket) {
         Online.on('online', function(e) {
                 if (Online.requests.length) {
-                    console.log(Online.requests);
-                    // handle request strings
-                    var reqArray = [];
+                	var reqArray = [];
+                	
+                	/**
+                	 * handleRequest
+                	 * handles objects for post and put methods
+                	 * @param {String} req
+                	 * @param {String} method
+                	 * @param {Object} obj
+                	 */
+                    var handleRequest = function(req, method, obj) {
+	                    if (!obj) {
+		                    (method === 'post') ? $http.post(req) : $http.put(req);
+	                    }
+	                    else {
+		                    (method === 'post') ? $http.post(req, obj) : $http.put(req, obj);
+	                    }
+                    };
+                    
+                    // create the reqArr from requests
                     for (var i = 0; i < Online.requests.length; i++) {
-                        reqArray.push($http.get(Online.requests[i]));
+                    	switch (Online.requests[i].method.toLowerCase()) {
+	                    	case 'get': reqArray.push($http.get(Online.requests[i].url));
+	                    	break;
+	                    	case 'post': reqArray.push(handleRequest(Online.requests[i].url, 'post', Online.requests[i].data));
+	                    	break;
+	                    	case 'delete': reqArray.push($http.delete(Online.requests[i].url));
+	                    	break;
+	                    	case 'put': reqArray.push(handleRequest(Online.requests[i].url, 'put', Online.requests[i].data));
+	                    	break;
+                    	}
                     }
                     /**
                      * uniqueArray 
                      * creates a unique array from the reqArray
                      * to prevent duplicate request.
+                     * @param {Array} ogArr
                      */
                     var uniqueArray = function(ogArr) {
                         var newArr = [],
@@ -106,9 +155,12 @@
                         }
                         return newArr;
                     };
+                    
                     // make all requests
                     $q.all(uniqueArray(reqArray)).then(function(results) {
-                        if (results) { 
+                        if (results) {
+                        	console.log(uniqueArray(reqArray));
+                        	console.log(results);
                             console.log('Results were returned.');
                             // emit offline:update event 
                             socket.emit('offline:update');

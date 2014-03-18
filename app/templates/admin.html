@@ -37,4 +37,21 @@
 			</table>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2>Bowlers</h2>
+		</div>
+		<div class="panel-body">
+			<table class="table">
+				<tr>
+					<th>Bowler Name</th>
+					<th>Remove Bowler</th>
+				</tr>
+				<tr ng-repeat="bowler in bowlers">
+					<td>{{bowler.name}}</td>
+					<td><button type="button" class="btn btn-danger" ng-click="removeBowler($index)"><i class="glyphicon glyphicon-minus-sign"></i></button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </div>
