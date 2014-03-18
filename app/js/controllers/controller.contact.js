@@ -5,6 +5,9 @@
 			'$scope',
 			'$modalInstance',
 			function ($scope, $modalInstance) {
+				/* cancel
+				 * dismisses the modal
+				 */
 				$scope.cancel = function () {
 					$modalInstance.dismiss('cancel');
 				};

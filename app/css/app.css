@@ -31,6 +31,65 @@ nav {
 	text-align: justify;
 }
 
+/* New Game */
+
+.score-card li {
+	float: left;
+	display: inline;
+}
+
+.frame-container {
+	height: auto;
+	width: 90px;
+	padding: 2.5px;
+	border: 1px solid #000;
+}
+
+.frame-container-last {
+	height: auto;
+	width: 120px;
+	padding: 2.5px;
+	border: 1px solid #000;
+}
+
+.frame-table td {
+	padding: 0.2em 0.5em;
+}
+
+.short {
+	width: 30px;
+	text-align: center;
+}
+
+.shot-2 {
+	position: relative;
+	left: -45px;
+}
+
+.shot-2-last {
+	position: relative;
+	left: -80px;
+}
+
+.shot-3 {
+	position: relative;
+	left: -89px;
+}
+
+.mid {
+	width: 70px;
+	text-align: center;
+}
+
+.mid-last {
+	width: 100px;
+	text-align: center;
+}
+
+.score-card-footer {
+	height: 55px;
+}
+
 /* Media Queries */
 @media screen and (min-width: 768px) {
 	.about-text {
