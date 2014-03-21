@@ -21,9 +21,18 @@
 			<div class="form-group">
 				<input 
 					class="form-control"
-					ng-model="newBowler"
+					ng-model="newBowler.name"
 					placeholder="New Bowler's Name"
 				/>
+			</div>
+			<div class="form-group">
+				<select
+					class="form-control"
+					ng-model="newBowler.university"
+					ng-options="university.name for university in universities"
+				/>
+					<option value="">Choose a university</option>
+				</select>
 			</div>
 			<button class="btn btn-primary" type="submit">Create Bowler</button>
 		</form>

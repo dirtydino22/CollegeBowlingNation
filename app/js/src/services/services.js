@@ -5,6 +5,6 @@
 		'app.service.socket',
 		'app.service.localStorage',
 		'app.service.online',
-		'app.service.game'
+		'app.service.universities'
 	]);
 }(angular));

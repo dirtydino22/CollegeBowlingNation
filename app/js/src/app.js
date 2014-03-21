@@ -3,7 +3,7 @@
  */
 (function(angular) {
     'use strict';
-    angular.module('app', ['ngRoute', 'ui.bootstrap', 'app.controllers', 'app.services', 'app.directives'])
+    angular.module('app', ['ngRoute', 'ui.bootstrap', 'app.controllers', 'app.services', 'app.directives', 'app.filters'])
         .config(function($routeProvider, $locationProvider, $httpProvider) {
             $httpProvider.interceptors.push(function($q, Online) {
                 return {
