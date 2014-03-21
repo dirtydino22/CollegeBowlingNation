@@ -5,7 +5,10 @@
 			'$scope',
 			'$http',
 			'socket',
-			function ($scope, $http, socket) {
+			'Universities',
+			function ($scope, $http, socket, Universities) {
+				$scope.newBowler = {};
+				$scope.universities = Universities.get();
 				// socket
 				socket.on('newBowler:update', function(bowlers) {
 					$scope.bowlers = bowlers;
@@ -21,7 +24,8 @@
 				// createBowler
 				$scope.createBowler = function() {
 					$http.post('api/bowlers', {
-						name: $scope.newBowler
+						name: $scope.newBowler.name,
+						university: $scope.newBowler.university.name
 					})
 					.success(function() {
 						// emit newBowler update

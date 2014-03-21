@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
 	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 		jshint: {
 			options: {
 				curly: true,
@@ -8,19 +9,25 @@ module.exports = function (grunt) {
 				browser: true,
 				indent: 4,
 				smarttabs: true,
-				node: true,
-				globals: {
-					angular: true
-				}
+				node: true
 			},
 			all: [
 				'Gruntfile.js',
-				'app/js/**/*.js',
+				'app/js/src/**/*.js',
 				'lib/**/*.js'
 			]
+		},
+		concat: {
+			options: {
+				seperator: ';'
+			},
+			dist: {
+				src: ['app/js/src/**/*.js'],
+				dest: 'app/js/dist/<%= pkg.name %>.js'
+			}
 		}
 	});
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-
-	grunt.registerTask('default', ['jshint']);
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.registerTask('default', ['jshint', 'concat']);
 };
