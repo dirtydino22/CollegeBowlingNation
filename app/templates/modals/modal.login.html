@@ -29,8 +29,14 @@
 			<input type="tel" name="phone" class="form-control" ng-model="user.phone" placeholder="Phone Number" />
 		</div>
 		<div class="form-group">
-			<input type="text" name="university" class="form-control" ng-model="user.university" placeholder="University" />
-		</div>
+				<select
+					class="form-control"
+					ng-model="user.university"
+					ng-options="university.name for university in universities"
+				>
+					<option value="">--Choose a university--</option>
+				</select>
+			</div>
 		<div class="form-group">
 			<input type="text" name="access" class="form-control" ng-model="user.access" placeholder="Access" />
 		</div>

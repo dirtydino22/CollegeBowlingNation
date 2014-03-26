@@ -13,21 +13,11 @@ module.exports = function (grunt) {
 			},
 			all: [
 				'Gruntfile.js',
-				'app/js/src/**/*.js',
+				'app/js/**/*.js',
 				'lib/**/*.js'
 			]
-		},
-		concat: {
-			options: {
-				seperator: ';'
-			},
-			dist: {
-				src: ['app/js/src/**/*.js'],
-				dest: 'app/js/dist/<%= pkg.name %>.js'
-			}
 		}
 	});
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.registerTask('default', ['jshint', 'concat']);
+	grunt.registerTask('default', ['jshint']);
 };
