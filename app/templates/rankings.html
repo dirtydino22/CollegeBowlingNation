@@ -2,47 +2,14 @@
 	<div class="panel panel-info">
 		<div class="panel-heading">
 			<div class="row">
-				<div class="col-xs-5">
 				<h2>Team Rankings</h2>
-				</div>
-				<div class="col-xs-6 pull-right">
-				<input type="text" ng-model="search" placeholder="Search Teams" class="form-control" />
-				</div>
 			</div>
-			
-
 		</div>
 		<div class="panel-body">
 			<div class="table-responsive">
-				<table class="table table-striped">
-					<tr>
-						<th tooltip="Rank" tooltip-append-to-body="true">R&#35;</th>
-						<th>Team Name</th>
-						<th tooltip="# of events counted" tooltip-append-to-body="true">Evt</th>
-						<th tooltip="# of Tier one events" tooltip-append-to-body="true">Tr1</th>
-						<th tooltip="Average power points per event" tooltip-append-to-body="true">AVG</th>
-						<th tooltip="Average multiplied by event factor" tooltip-append-to-body="true">AxEF</th>
-						<th tooltip="Powerpoint multiplied by two" tooltip-append-to-body="true">PPx2</th>
-						<th>Total</th>
-						<th tooltip="Prior power ranking" tooltip-append-to-body="true">Prv</th>
-						<th tooltip="Change in power ranking" tooltip-append-to-body="true">Diff</th>
-						<th tooltip="Change in total" tooltip-append-to-body="true">&#43; &#47; &#45;</th>
-					</tr>
-					<tr ng-repeat="team in teams | filter:search">
-						<td>{{ team.rank }}</td>
-						<td>{{ team.teamName }}</td>
-						<td>{{ team.evt }}</td>
-						<td>{{ team.tr1 }}</td>
-						<td>{{ team.avg }}</td>
-						<td>{{ team.axef }}</td>
-						<td>{{ team.ppx2 }}</td>
-						<td>{{ team.total }}</td>
-						<td>{{ team.prv }}</td>
-						<td>{{ team.diff }}</td>
-						<td>{{ team.overUnder }}</td>
-					</tr>
-				</table>
+				<div class="gridStyle" ng-grid="gridOptions"></div>
 			</div>
+			<p ng-repeat="team in selectedTeams">Selected : {{team.name}}</p>
 		</div>	
 	</div>
 </div>

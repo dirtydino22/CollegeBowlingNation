@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="libs/offline/offline-theme-chrome.css">
+        <link rel="stylesheet" href="libs/angular-ui-ng-grid/ng-grid.min.css">
         <link rel="stylesheet" href="css/app.css">
         <!--]if lte IE 8]>
             <script src="libs/ui-utils/modules/ie-shiv/ie-shiv.js"></script>
@@ -35,7 +35,6 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#/">Home</a></li>
                         <li><a href="#/rankings">Rankings</a></li>
-        				<li><a href="#/">Statistics</a></li>
                         <li><a href="#/prospects">Prospective Bowlers</a></li>
         				<li><a href="#">Blog</a></li>
         				<li><a href="" ng-click="openContactModal()">Contact Us</a></li>
@@ -43,6 +42,9 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                         	<a ng-show="user" href="#/newgame">New Game</a>
+                        </li>
+                        <li>
+                            <a ng-show="user" href="#/account">Account</a>
                         </li>
                         <li>
                         	<a ng-show="admin" href="#/admin">Admin</a>
@@ -59,10 +61,35 @@
 	    <section data-ng-view="" class="view"></section>
 
         <script src="socket.io/socket.io.js"></script>
+        <script src="libs/jquery.js"></script>
         <script src="libs/angular/angular.min.js"></script>
         <script src="libs/angular/angular-route.min.js"></script>
         <script src="libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js"></script>
-        <script src="js/dist/CollegeBowlingNation.js"></script>
+        <script src="libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/controllers.js"></script>
+        <script src="js/controllers/controller.main.js"></script>
+        <script src="js/controllers/controller.navigation.js"></script>
+        <script src="js/controllers/controller.login.js"></script>
+        <script src="js/controllers/controller.contact.js"></script>
+        <script src="js/controllers/controller.rankings.js"></script>
+        <script src="js/controllers/controller.prospects.js"></script>
+        <script src="js/controllers/controller.admin.js"></script>
+        <script src="js/controllers/controller.newGame.js"></script>
+        <script src="js/controllers/controller.bowler.js"></script>
+        <script src="js/controllers/controller.team.js"></script>
+        <script src="js/controllers/controller.account.js"></script>
+        <script src="js/services/services.js"></script>
+        <script src="js/services/service.auth.js"></script>
+        <script src="js/services/service.socket.js"></script>
+        <script src="js/services/service.localStorage.js"></script>
+        <script src="js/services/service.online.js"></script>
+        <script src="js/services/service.universities.js"></script>
+        <script src="js/directives/directives.js"></script>
+        <script src="js/directives/directive.scoreCard.js"></script>
+        <script src="js/filters/filters.js"></script>
+        <script src="js/filters/filter.frameScore.js"></script>
+        <script src="js/filters/filter.rollDisplay.js"></script>
 
     </body>
 </html>
