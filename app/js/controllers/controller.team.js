@@ -7,7 +7,7 @@
 		'$http',
 		'team',
 		function ($scope, $modalInstance, $http, team) {
-			var pinCount, strikes, spares;
+			var pinCount = [], strikes = [], spares = [], gutters = [], rolls = [];
 			var sum = function(data) {
                 var sum = 0, length = data.length, i;
                 for (i = 0; i < length; i++) {
@@ -15,23 +15,26 @@
                 }
                 return sum;
             };
+
 			$scope.team = team[0];
 			$scope.teamData = undefined;
 			$scope.games = undefined;
-			
-
+			$scope.stats = [500,2000,800];
 			$http.get('api/teams/' + $scope.team.name)
 				.success(function(data) {
 					$scope.teamData = data[0];
 					$scope.games = data[0].games;
-					for (var i = 0; i < data[0].games.length; i++) {
+					console.log(data[0].games);
+					for(var i in data[0].games) {
 						pinCount.push(data[0].games[i].pinCount);
 						strikes.push(data[0].games[i].strikes);
 						spares.push(data[0].games[i].spares);
+						gutters.push(data[0].games[i].gutterBalls);
+						rolls.push(data[0].games[i].rollCount);
 					}
-				
-				});
 
+					$scope.stats = [sum(pinCount), sum(strikes), sum(spares), sum(gutters), sum(rolls)];
+				});
 			$scope.ok = function() {
 				$modalInstance.close();
 			};

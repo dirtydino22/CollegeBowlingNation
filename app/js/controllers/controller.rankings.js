@@ -7,13 +7,15 @@
             '$modal',
             'socket',
             'localStorage',
-            function($scope, $http, $modal, socket, localStorage) {
+            'Online',
+            function($scope, $http, $modal, socket, localStorage, Online) {
                 var getGames, createGameObject, analyzeGameData, createAnalyzedDataArray;
                 $scope.teamData = [];
                 $scope.selectedTeams = [];
-                var reset = function() {
+                $scope.message = '';
+                function reset() {
                     $scope.selectedTeams = [];
-                };
+                }
                 $scope.$watchCollection('selectedTeams', function(newValue) {
                     if ($scope.selectedTeams.length > 0) {
                         var modalInstance = $modal.open({
@@ -25,6 +27,12 @@
                                 }
                             }
                         });
+                        modalInstance.result.then(function() {
+                            $scope.message = 'Please deselect team before choosing another.';
+                        });
+                    }
+                    if ($scope.selectedTeams.length === 0) {
+                        $scope.message = '';
                     }
                 });
                 socket.on('stats:update', function(stats) {
@@ -32,21 +40,43 @@
                     $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
                 });
 
-                $http.get('api/teams')
-                    .success(function(data) {
-                        localStorage.set('stats', angular.toJson(data));
-                        $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(data)))]);
-                    });
+                if (!Online.check()) { // offline
+                    try {
+                        // try localStorage for last stored api results
+                        localStorage.get('stats').then(function(stats) {
+                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                        });
+                    }
+                    catch (err) {
+                        // no data
+                        console.log('No Data');
+                    }
+                }
+                else {
+                    // initial api call for stats
+                    $http.get('api/teams')
+                        .success(function(stats) {
+                            localStorage.set('stats', angular.toJson(stats));
+                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                        })
+                        .error(function(err) {
+                            console.log(err);
+                        });
+                }
+
+                
                 
                 $scope.gridOptions = {
                     data: 'teamData',
                     columnDefs: [
                         {field:'name', displayName: 'University'},
+                        /*
                         {field:'pinCount', displayName: 'Pin Count'},
                         {field:'rollCount', displayName: 'Roll Count'},
                         {field:'gutterBalls', displayName: 'Gutter Balls'},
                         {field:'strikes', displayName: 'Strikes'},
                         {field:'spares', displayName: 'Spares'},
+                        */
                         {field:'strikePercentage', displayName: 'Strike %'},
                         {field:'sparePercentage', displayName: 'Spare %'},
                         {field:'gamesPlayed', displayName: 'Games Played'}

@@ -58,6 +58,10 @@
                     templateUrl: 'templates/prospects.html',
                     controller: 'ProspectsCtrl'
                 })
+                .when('/blog', {
+                    templateUrl: 'templates/blog.html',
+                    controller: 'BlogCtrl'
+                })
                 .when('/account', {
                     templateUrl: 'templates/account.html',
                     controller: 'AccountCtrl',

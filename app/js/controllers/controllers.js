@@ -15,6 +15,8 @@
 		'app.controller.newGame',
 		'app.controller.bowler',
 		'app.controller.team',
-		'app.controller.account'
+		'app.controller.account',
+		'app.controller.blog',
+		'app.controller.post'
 	]);
 }(angular));
