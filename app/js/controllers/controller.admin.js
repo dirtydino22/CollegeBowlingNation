@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
 	'use strict';
 	angular.module('app.controller.admin', [])
 		.controller('AdminCtrl',[
@@ -126,7 +126,11 @@
 						
 				}
 				
-
+				/**
+				 * removeUser
+				 * removes a user
+				 * @ {Number} $index
+				 */
 				$scope.removeUser = function($index) {
 					var id = $scope.users[$index]._id;
 					$http.post('api/users/' + id + '/remove')
@@ -182,6 +186,73 @@
 							console.log(err);
 						});
 				};
+
+				/**
+				 * News
+				 */
+				 // socket
+				socket.on('news:update', function(news) {
+					localStorage.set('news', angular.toJson(news));
+					$scope.news = news;
+				});
+				$scope.newNews = {};
+				$scope.news = {};
+
+				if (!Online.check()) { // offline
+					try {
+						// try localStorage for last stored api results
+						localStorage.get('news').then(function(news) {
+							$scope.news = angular.fromJson(news);
+						});
+					}
+					catch (err) {
+						// no data
+						console.log('No Data');
+					}
+				}
+				else {
+					// initial api call for news
+					$http.get('api/news')
+						.success(function(news) {
+							localStorage.set('news', angular.toJson(news));
+							$scope.news = news;
+						})
+						.error(function(err) {
+							console.log(err);
+						});
+				}
+				/**
+				 * addNews
+				 * posts a news item
+				 */
+				$scope.addNews = function() {
+					$http.post('api/news', {
+						author: $scope.newNews.author,
+						title: $scope.newNews.title,
+						body: $scope.newNews.body
+					})
+					.success(function() {
+						// update view
+						socket.emit('news:update');
+					})
+					.error(function(err) {
+						console.log(err);
+					});
+				};
+				/**
+				 * removeNews
+				 * removes a news item
+				 * @ {String} id
+				 */
+				$scope.removeNews = function(id) {
+					$http.delete('api/news/' + id)
+						.success(function() {
+							socket.emit('news:update');
+						})
+						.error(function(err) {
+							console.log(err);
+						});
+				};
 			}
 		]);
-}(angular));
+}).call(this);

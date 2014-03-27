@@ -136,7 +136,7 @@
                  */
                 auth.updatePassword = function(id, password, cb) {
                     console.log('updatePassword(): ' + id + ' ' + password);
-                    $http.post('/api/users/' + id, {
+                    $http.post('/api/users/' + id + '/password', {
                         password: password
                     })
                         .success(function() {

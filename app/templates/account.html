@@ -1,4 +1,46 @@
 <div class="container">
+	<h2>Account</h2>
+	<div class="well">
+		<form name="updateInfoForm" ng-submit="updateInfo()">
+			<div class="form-group">
+				<input class="form-control" name="firstName" type="text" placeholder="First Name" ng-model="user.firstName" />
+			</div>
+			<div class="form-group">
+				<input class="form-control" name="lastName" type="text" placeholder="Last Name" ng-model="user.lastName" />
+			</div>
+			<div class="form-group">
+				<input type="text" name="address" class="form-control" ng-model="user.address" placeholder="Address 1" />
+			</div>
+			<div class="form-group">
+				<input type="text" name="address2" class="form-control" ng-model="user.address2" placeholder="Address 2" />
+			</div>
+			<div class="form-group">
+				<input type="text" name="city" class="form-control" ng-model="user.city" placeholder="City" />
+			</div>
+			<div class="form-group">
+				<input type="text" name="state" class="form-control" ng-model="user.state" placeholder="State" />
+			</div>
+			<div class="form-group">
+				<input type="text" name="zipcode" class="form-control" ng-model="user.zipcode" placeholder="Zipcode" />
+			</div>
+			<div class="form-group">
+				<input type="tel" name="phone" class="form-control" ng-model="user.phone" placeholder="Phone Number" />
+			</div>
+			<div class="form-group">
+				<select
+					class="form-control"
+					ng-model="user.university"
+					ng-options="university.name for university in universities"
+				>
+					<option value="">Choose a university</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Email" />
+			</div>
+			<button class="btn btn-primary" type="submit">Update Info</button>
+		</form>
+	</div>
 	<div class="well">
 		<form name="updatePasswordForm" ng-submit="updatePassword()">
 			<div class="form-group">

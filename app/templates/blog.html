@@ -1,0 +1,15 @@
+<div class="container">
+	<h2>Blog</h2>
+	<button class="btn btn-primary" ng-click="openNewPostModal()">New Post</button>
+	<div class="well">
+		<ul>
+			<li ng-repeat="post in posts">
+				<button class="btn btn-danger" ng-show="admin" ng-click="removePost(post._id)">X</button>
+				<p>{{post.title}}|{{post.createdOn|date}}</p>
+				<p>{{post.author}}</p>
+				<p>{{post.body}}</p>
+				<div replies="post.replies" id="post._id"></div>
+			</li>
+		</ul>
+	</div>
+</div>

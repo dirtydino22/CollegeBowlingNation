@@ -1,12 +1,7 @@
 <div class="container">
-	<h2>Prospective Bowlers</h2>
-	<div class="panel panel-info">
-				<div class="panel-heading">
-					<h3>Contact A Coach</h3>
-				</div>
-				<div class="panel-body">
-				<form name="prospectForm" novalidate ng-submit="sendProspect()">
-					<fieldset class="col-xs-12 col-md-6 pull-left">
+	<h2>Prospective Bowlers<small> Contact A Coach</small></h2>
+		<form name="prospectForm" novalidate ng-submit="sendProspect()">
+			<fieldset class="col-xs-12 col-md-6 pull-left">
 						<legend>Personal Information</legend>
 								<div class="form-group">
 									<span class="sr-only">Full Name</span>
@@ -214,7 +209,7 @@
 								<div class="form-group">
 									<span class="sr-only">Email Of College Coach</span>
 									<select class="form-control"
-										ng-model="prospect.bowlStyle"
+										ng-model="prospect.coachToContact"
 										ng-options="coach.desc for coach in coaches">
 										<option value="">--Coach You Would Like To Contact--</option>
 									</select>
@@ -227,8 +222,6 @@
 									</textarea>
 								</div>
 					</fieldset>
-					<button class="btn btn-primary pull-right" style="margin-right:1em;">Send Form</button>
-				</div>
+				<button class="btn btn-primary pull-right" style="margin-right:1em;" ng-click="sendToCoach()">Send Form</button>
 		</form>
-	</div>
 </div>
