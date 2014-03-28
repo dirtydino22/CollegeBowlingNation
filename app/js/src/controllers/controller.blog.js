@@ -19,7 +19,6 @@
 
 				if (!Online.check()) { // offline
 					try {
-						alert('trying ls');
 						// try localStorage for last stored api results
 						localStorage.get('posts').then(function(posts) {
 							$scope.posts = angular.fromJson(posts);
@@ -31,7 +30,6 @@
 					}
 				}
 				else {
-					alert('trying api');
 					// initial api call for posts
 					$http.get('api/posts')
 						.success(function(posts) {
