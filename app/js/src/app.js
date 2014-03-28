@@ -178,6 +178,7 @@
                 }
             });
         });
+    window.applicationCache.update();
     // cache maifest listener
     /*
     window.addEventListener('load', function(e) {

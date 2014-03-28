@@ -1,0 +1,36 @@
+CACHE MANIFEST
+# 2014-03-28:v1
+
+# Explicitly cached 'master intries'.
+CACHE:
+index.html
+templates/main.html
+templates/admin.html
+templates/blog.html
+templates/bowler.html
+templates/newgame.html
+templates/prospects.html
+templates/rankings.html
+templates/replies.html
+templates/scorecard.html
+templates/modals/modal.contact.html
+templates/modals/modal.login.html
+templates/modals/modal.post.html
+templates/modals/modal.team.html
+css/app.css
+js/cbn.min.js
+libs/angular/angular.min.js
+libs/angular/angular-route.min.js
+libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js
+libs/jquery.js
+libs/bootstrap/dist/css/bootstrap.min.css
+libs/d3/d3.min.js
+libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js
+libs/angular/angular.min.js
+img/banner.gif
+
+# Resources that require the user to be online.
+NETWORK:
+*
+
+FALLBACK:
