@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 				smarttabs: true,
 				node: true
 			},
-			all: [
+			files: [
 				'Gruntfile.js',
 				'app/js/src/**/*.js',
 				'lib/**/*.js'
@@ -34,10 +34,15 @@ module.exports = function (grunt) {
 					'app/js/cbn.min.js' : ['app/js/cbn.js']
 				}
 			}
+		},
+		watch: {
+			files: ['<%= jshint.files %>'],
+			tasks: ['jshint','concat','uglify']
 		}
 	});
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.registerTask('default', ['jshint','concat','uglify']);
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.registerTask('default', ['jshint','concat','uglify','watch']);
 };

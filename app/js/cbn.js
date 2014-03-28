@@ -178,6 +178,8 @@
                 }
             });
         });
+    // cache maifest listener
+    /*
     window.addEventListener('load', function(e) {
         window.applicationCache.addEventListener('updateready', function(e) {
             if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
@@ -187,6 +189,7 @@
             }
         });
     });
+    */
 }).call(this);
 (function() {
 	'use strict';
@@ -523,6 +526,7 @@
 
 				if (!Online.check()) { // offline
 					try {
+						alert('trying ls');
 						// try localStorage for last stored api results
 						localStorage.get('posts').then(function(posts) {
 							$scope.posts = angular.fromJson(posts);
@@ -534,6 +538,7 @@
 					}
 				}
 				else {
+					alert('trying api');
 					// initial api call for posts
 					$http.get('api/posts')
 						.success(function(posts) {
@@ -882,6 +887,7 @@
 						console.log(users);
 						var i;
 						for (i = 0; i < users.length; i++) {
+							// push coach object
 							userArray.push({
 								desc: users[i].firstName + ' ' + users[i].lastName + ' ' + users[i].university + ' : ' + users[i].email,
 								name: users[i].firstName + users[i].lastName,

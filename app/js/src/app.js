@@ -178,6 +178,8 @@
                 }
             });
         });
+    // cache maifest listener
+    /*
     window.addEventListener('load', function(e) {
         window.applicationCache.addEventListener('updateready', function(e) {
             if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
@@ -187,4 +189,5 @@
             }
         });
     });
+    */
 }).call(this);
