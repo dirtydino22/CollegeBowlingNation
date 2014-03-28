@@ -1,7 +1,4 @@
-/**
- * app module
- */
-(function(angular) {
+(function() {
     'use strict';
     angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngGrid', 'app.controllers', 'app.services', 'app.directives', 'app.filters'])
         .config(function($routeProvider, $locationProvider, $httpProvider) {
@@ -102,7 +99,7 @@
                     redirectTo: '/'
                 });
         })
-        .run(function($http, $q, Online, socket) {
+        .run(function($http, $q, $window, Online, socket) {
             Online.on('online', function(e) {
                 if (Online.requests.length) {
                     var reqArray = [];
@@ -181,4 +178,13 @@
                 }
             });
         });
-}(angular));
+    window.addEventListener('load', function(e) {
+        window.applicationCache.addEventListener('updateready', function(e) {
+            if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+                if (confirm('A new version of this site is available. Load it?')) {
+                    window.location.reload();
+                }
+            }
+        });
+    });
+}).call(this);

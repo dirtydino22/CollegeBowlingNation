@@ -36,6 +36,7 @@
 						console.log(users);
 						var i;
 						for (i = 0; i < users.length; i++) {
+							// push coach object
 							userArray.push({
 								desc: users[i].firstName + ' ' + users[i].lastName + ' ' + users[i].university + ' : ' + users[i].email,
 								name: users[i].firstName + users[i].lastName,
