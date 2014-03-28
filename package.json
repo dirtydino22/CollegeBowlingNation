@@ -15,7 +15,10 @@
     "mongoose": "~3.8.7",
     "passport-local": "~0.1.6",
     "nodemailer": "~0.6.1",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "connect-cache-manifest": "^0.2.0",
+    "connect-offline": "^1.0.4",
+    "appcache-node": "^0.2.0"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.13",

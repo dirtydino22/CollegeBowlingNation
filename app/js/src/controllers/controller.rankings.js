@@ -44,7 +44,7 @@
                     try {
                         // try localStorage for last stored api results
                         localStorage.get('stats').then(function(stats) {
-                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(angular.fromJson(stats))))]);
                         });
                     }
                     catch (err) {

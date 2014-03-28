@@ -19,7 +19,7 @@
 			$scope.team = team[0];
 			$scope.teamData = undefined;
 			$scope.games = undefined;
-			$scope.stats = [500,2000,800];
+			$scope.stats = [0,0,0];
 			$http.get('api/teams/' + $scope.team.name)
 				.success(function(data) {
 					$scope.teamData = data[0];
