@@ -3,11 +3,10 @@
     angular.module('app.controller.newGame', [])
         .controller('NewGameCtrl', [
             '$scope',
-            '$routeParams',
-            'socket',
-            function($scope, $routeParams, socket) {
-                $scope.id = $routeParams.id; // bowler id
-
+            'Roster',
+            function($scope, Roster) {
+                $scope.game = 'tenpin';
+                $scope.bowlers = Roster.bowlers;
             }
         ]);
 }(angular));

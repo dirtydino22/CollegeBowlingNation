@@ -8,11 +8,14 @@
             'socket',
             'localStorage',
             'Online',
-            function($scope, $http, $modal, socket, localStorage, Online) {
-                var getGames, createGameObject, analyzeGameData, createAnalyzedDataArray;
+            'apiToken',
+            '$dialogs',
+            function($scope, $http, $modal, socket, localStorage, Online, apiToken, $dialogs) {
+                var getPlayers, getGames, analyzeGameData, createAnalyzedDataArray;
                 $scope.teamData = [];
                 $scope.selectedTeams = [];
                 $scope.message = '';
+
                 function reset() {
                     $scope.selectedTeams = [];
                 }
@@ -37,91 +40,64 @@
                 });
                 socket.on('stats:update', function(stats) {
                     localStorage.set('stats', angular.toJson(stats));
-                    $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                    $scope.teamData = createAnalyzedDataArray(analyzeGameData(getGames(getPlayers(stats))));
                 });
 
-                if (!Online.check()) { // offline
+                if (!Online.check()) {
                     try {
                         // try localStorage for last stored api results
                         localStorage.get('stats').then(function(stats) {
-                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(angular.fromJson(stats))))]);
+                            $scope.teamData = $scope.teamData = createAnalyzedDataArray(analyzeGameData(getGames(getPlayers(angular.fromJson(stats)))));
                         });
-                    }
-                    catch (err) {
+                    } catch (err) {
                         // no data
-                        console.log('No Data');
+                        $dialogs.error('Data Unavailble','Sorry, no data is available at this time.');
                     }
-                }
-                else {
-                    // initial api call for stats
-                    $http.get('api/teams')
+                } else {
+                    $http.get(apiToken + '/teams')
                         .success(function(stats) {
                             localStorage.set('stats', angular.toJson(stats));
-                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                            $scope.teamData = createAnalyzedDataArray(analyzeGameData(getGames(getPlayers(stats))));
                         })
                         .error(function(err) {
-                            console.log(err);
+                            $scope.teamData('Token Error',err);
                         });
                 }
 
-                
-                
-                $scope.gridOptions = {
-                    data: 'teamData',
-                    columnDefs: [
-                        {field:'name', displayName: 'University'},
-                        /*
-                        {field:'pinCount', displayName: 'Pin Count'},
-                        {field:'rollCount', displayName: 'Roll Count'},
-                        {field:'gutterBalls', displayName: 'Gutter Balls'},
-                        {field:'strikes', displayName: 'Strikes'},
-                        {field:'spares', displayName: 'Spares'},
-                        */
-                        {field:'strikePercentage', displayName: 'Strike %'},
-                        {field:'sparePercentage', displayName: 'Spare %'},
-                        {field:'gamesPlayed', displayName: 'Games Played'}
-                    ],
-                    selectedItems: $scope.selectedTeams 
-                };
-                createAnalyzedDataArray = function(data) {
-                    var arr = [];
-                    for (var key in data[0]) {
-                        arr.push(data[0][key]);
+                getPlayers = function(stats) {
+                    var myObj = {};
+                    for (var i = 0; i < stats.length; i++) {
+                        for (var o = 0; o < stats[i].roster.length; o++) {
+                            if (!myObj.hasOwnProperty(stats[i].university)) {
+                                myObj[stats[i].university] = {
+                                    name: stats[i].university,
+                                    players: [stats[i].roster[o]]
+                                };
+                            } else {
+                                myObj[stats[i].university].players.push(stats[i].roster[o]);
+                            }
+                        }
                     }
-                    return arr;
+                    return myObj;
                 };
 
                 getGames = function(data) {
-                    var arr = [],
-                        i;
-                    for (i = 0; i < data.length; i++) {
-                        if (data[i].games.length > 0) {
-                            arr.push({
-                                university: data[i].university,
-                                game: data[i].games
-                            });
+                    var myObj = {};
+                    for (var university in data) {
+                        for (var i = 0;  i < data[university].players.length; i++) {
+                            if (!myObj.hasOwnProperty(university)) {
+                                myObj[university] = {
+                                    name: university,
+                                    games: data[university].players[i].games
+                                };
+                            } else {
+                                for (var o = 0; o < data[university].players[i].games.length; o++) {
+                                    myObj[university].games.push(data[university].players[i].games[o]);
+                                }
+                            }
                         }
                     }
-                    return arr;
-                };
-
-                createGameObject = function(data) {
-                    var myObj = {};
-                    Object.keys(data).forEach(function(key) {
-                        if (!myObj.hasOwnProperty(data[key].university)) {
-                            myObj[data[key].university] = {
-                                games: [],
-                                name: data[key].university
-                            };
-                        }
-                        if (data[key].game.length > 1) {
-                            for (var i = 0; i < data[key].game.length; i++) {
-                                myObj[data[key].university].games.push(data[key].game[i]);
-                            }
-                        } else if (data[key].game.length === 1) {
-                            myObj[data[key].university].games.push(data[key].game[0]);
-                        }
-                    });
+                    //console.log('Games',myObj);
                     return myObj;
                 };
 
@@ -138,7 +114,9 @@
                             strikePercentage: 0,
                             sparePercentage: 0,
                             name: undefined,
-                            gamesPlayed: 0
+                            gamesPlayed: 0,
+                            nineMade: 0,
+                            nineCount: 0
                         };
                         if (gameObj[key].games.length > 1) {
                             for (var i = 0; i < gameObj[key].games.length; i++) {
@@ -151,6 +129,8 @@
                                 model.sparePercentage += gameObj[key].games[i].sparePercentage;
                                 model.name = gameObj[key].name;
                                 model.gamesPlayed = gameObj[key].games.length;
+                                model.nineMade += gameObj[key].games[i].nineMade;
+                                model.nineCount += gameObj[key].games[i].nineCount;
                             }
                             model.strikePercentage = Math.round(model.strikePercentage / model.gamesPlayed) / 100;
                             model.sparePercentage = Math.round(model.sparePercentage / model.gamesPlayed) / 100;
@@ -161,6 +141,8 @@
                             model.gutterBalls += gameObj[key].games[0].gutterBalls;
                             model.strikes += gameObj[key].games[0].strikes;
                             model.spares += gameObj[key].games[0].spares;
+                            model.nineMade += gameObj[key].games[0].nineMade;
+                            model.nineCount += gameObj[key].games[0].nineCount;
                             model.strikePercentage += Math.round(gameObj[key].games[0].strikePercentage) / 100;
                             model.sparePercentage += Math.round(gameObj[key].games[0].sparePercentage) / 100;
                             model.name = gameObj[key].name;
@@ -168,9 +150,63 @@
                             scoreObj[key] = model;
                         }
                     }
-                    
+                    //console.log('scoreObj',scoreObj);
                     return scoreObj;
                 };
+
+                createAnalyzedDataArray = function(data) {
+                    var arr = [];
+                    for (var key in data) {
+                        arr.push(data[key]);
+                    }
+                    return arr;
+                };
+
+                $scope.gridOptions = {
+                    data: 'teamData',
+                    columnDefs: [{
+                            field: 'name',
+                            displayName: 'University'
+                        },
+
+                        {
+                            field: 'pinCount',
+                            displayName: 'Pin Count'
+                        }, {
+                            field: 'rollCount',
+                            displayName: 'Roll Count'
+                        }, {
+                            field: 'gutterBalls',
+                            displayName: 'Gutter Balls'
+                        }, {
+                            field: 'strikes',
+                            displayName: 'Strikes'
+                        }, {
+                            field: 'spares',
+                            displayName: 'Spares'
+                        },
+                        {
+                            field: 'nineCount',
+                            displayName: 'Nine Count'
+                        },
+                        {
+                            field: 'nineMade',
+                            displayName: 'Nine Made'
+                        },
+                        {
+                            field: 'strikePercentage',
+                            displayName: 'Strike %'
+                        }, {
+                            field: 'sparePercentage',
+                            displayName: 'Spare %'
+                        }, {
+                            field: 'gamesPlayed',
+                            displayName: 'Games Played'
+                        }
+                    ],
+                        selectedItems: $scope.selectedTeams
+                    };
+
             }
         ]);
 }).call(this);

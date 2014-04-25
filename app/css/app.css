@@ -2,6 +2,30 @@
 .view {
 	position: relative;
 	top: 5em;
+  opacity: 1;
+}
+
+.animate-view.ng-enter, .animate-view.ng-leave {
+  -webkit-transition: 500ms ease-in-out all;
+  -moz-transition: 500ms ease-in-out all;
+  -ms-transition: 500ms ease-in-out all;
+  -o-transition: 500ms ease-in-out all;
+  transition: 500ms ease-in-out all;
+}
+
+.animate-view.ng-enter {
+  opacity: 0;
+}
+.animate-view.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.animate-view.ng-leave {
+  opacity: 1;
+}
+
+.animate-view.ng-leave.ng-leave-active {
+  opacity: 0;
 }
 
 nav {
@@ -12,23 +36,32 @@ nav {
     filter: progid: DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=2, Color=#a5333333, Positive=true);
 }
 
+ul {
+  list-style-type: none;
+}
+
 /* Main.html Styles */
 
 .banner {
 	position: relative;
 	top: -1.5em;
 	margin-bottom: -1.5em;
+  background: #FFFFFF;
 }
 
 .about {
-	background-color: #005CE6;
+	background-color: #333333;
 }
 
 .about-text {
-	padding: 2em 0 1em;
+	padding: 2em 0;
 	margin: 0 2em;
 	color: #FFFFFF;
 	text-align: justify;
+}
+.news {
+  position: relative;
+  left: -1em;
 }
 
 /* Rankings Grid */
@@ -61,9 +94,43 @@ nav {
   box-shadow: 2px 2px 2px #666;
 }
 
+/* Blog */
+.blog-list {
+  position: relative;
+  left: -1.3em;
+}
+
+/* New Game */
+.score-cards {
+  position: relative;
+  top: 3em;
+}
+
+/* Dialogs */
+.modal { 
+  display: block;
+}
+
+/* Custom dialog/modal headers */
+
+.dialog-header-error { background-color: #d2322d; }
+.dialog-header-wait { background-color: #428bca; }
+.dialog-header-notify { background-color: #eeeeee; }
+.dialog-header-confirm { background-color: #333333; }
+.dialog-header-error span, .dialog-header-error h4,
+.dialog-header-wait span, .dialog-header-wait h4,
+.dialog-header-confirm span, .dialog-header-confirm h4 { color: #ffffff; }
+
+/* Ease Display */
+
+.pad { padding: 25px; }
+
 /* Media Queries */
 @media screen and (min-width: 768px) {
 	.about-text {
 		margin: 0 8em;
 	}
+  .account-dropdown {
+    float: none;
+  }
 }

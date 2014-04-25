@@ -1,6 +1,7 @@
 (function() {
     'use strict';
-    angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngGrid', 'app.controllers', 'app.services', 'app.directives', 'app.filters'])
+    angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'dialogs', 'ngGrid', 'app.controllers', 'app.services', 'app.directives', 'app.filters'])
+        .constant('apiToken', 'api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg')
         .config(function($routeProvider, $locationProvider, $httpProvider) {
             $httpProvider.interceptors.push(function($q, $location, Online) {
                 return {
@@ -18,7 +19,7 @@
 
                                 return config || $q.when(config);
                             }
-                            /* if request to api, then push the url 
+                            /* if request to api, then push the url
                              * string to Online.requests array
                              */
                             return Online.requests.push({
@@ -86,9 +87,18 @@
                         }
                     }
                 })
-                .when('/newgame/:id', {
+                .when('/startgame', {
                     templateUrl: 'templates/newgame.html',
                     controller: 'NewGameCtrl',
+                    resolve: {
+                        auth: function(Auth) {
+                            Auth.isLoggedIn();
+                        }
+                    }
+                })
+                .when('/startbaker', {
+                    templateUrl: 'templates/newgame.html',
+                    controller: 'NewBakerGameCtrl',
                     resolve: {
                         auth: function(Auth) {
                             Auth.isLoggedIn();
@@ -164,34 +174,32 @@
                     // make all requests
                     $q.all(uniqueArray(reqArray)).then(function(results) {
                         if (results) {
-                            console.log(uniqueArray(reqArray));
-                            console.log(results);
-                            console.log('Results were returned.');
-                            // emit offline:update event 
+                            // emit offline:update event
                             socket.emit('offline:update');
                             // remove made requests
                             Online.requests = [];
                         }
                     });
-                } else {
+                }
+                /*
+                else {
                     console.log('No Requests.');
                 }
+                */
             });
-        });
-    window.applicationCache.update();
-    // cache maifest listener
-    /*
-    window.addEventListener('load', function(e) {
-        window.applicationCache.addEventListener('updateready', function(e) {
-            if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-                if (confirm('A new version of this site is available. Load it?')) {
-                    window.location.reload();
+            /**
+             * Cache Manifest
+             */
+            $window.applicationCache.addEventListener('updateready', function(e) {
+                if ($window.applicationCache.status === $window.applicationCache.UPDATEREADY) {
+                    if (confirm('A new version of this site is available. Would you like to load it?')) {
+                        $window.location.reload();
+                    }
                 }
-            }
+            }, false);
         });
-    });
-    */
 }).call(this);
+
 (function() {
 	'use strict';
 	angular.module('app.controller.account', [])
@@ -200,12 +208,16 @@
 			'$http',
 			'Universities',
 			'Auth',
-			function ($scope, $http, Universities, Auth) {
+			'localStorage',
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, Universities, Auth, localStorage, apiToken, $dialogs) {
 				$scope.user = {};
+				$scope.tokenMessage = false;
 				// retrieve the universities list
 				$scope.universities = Universities.get();
 				// get users account info
-				$http.get('api/users/' + Auth.user.id )
+				$http.get(apiToken + '/users/' + Auth.user.id )
 					.success(function(user) {
 						// add user info to the scope
 						$scope.user = user;
@@ -215,7 +227,7 @@
 				 * updates a users account info
 				 **/
 				$scope.updateInfo = function() {
-					$http.post('api/users/' + Auth.user.id + '/info', {
+					$http.post(apiToken + '/users/' + Auth.user.id + '/info', {
 						firstName: $scope.user.firstName,
 						lastName: $scope.user.lastName,
 						address: $scope.user.address,
@@ -228,10 +240,12 @@
 						email: $scope.user.email,
 					})
 						.success(function() {
-							console.log('User updated');
+							//console.log('User updated');
+							$dialogs.notify('User Updated','Your information has been updated.');
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Data post error','Your information could not be updated at this time.');
 						});
 				};
 				/**
@@ -241,13 +255,35 @@
 				$scope.updatePassword = function() {
 					if ($scope.user.password === $scope.user.confirm) {
 						Auth.updatePassword(Auth.user.id, $scope.user.password, function() {
-							console.log('Password Updated.');
+							//console.log('Password Updated.');
+							$dialogs.notify('Password Updated','Your password has been updated.');
 						});
+					}
+				};
+				/**
+				 * requestOfflineToken
+				 * save a offline token in localStorage
+				 **/
+				$scope.requestOfflineToken = function() {
+					if ($scope.user.offlinePassword === $scope.user.offlineConfirm) {
+						localStorage.set('offlineUser', angular.toJson({
+							username: Auth.user.username,
+		                    access: Auth.user.access,
+		                    id: Auth.user.id,
+		                    pass: $scope.user.offlinePassword,
+		                    timestamp: new Date().getTime()
+						})).then(function() {
+							$dialogs.notify('Success','Your offline token has been saved and is good for 21 days. Use this password with your username when logging in with no internet connection for offline access.');
+						});
+					}
+					else {
+						$dialogs.error('Error Retrieving Token','Your passwords do not match.');
 					}
 				};
 			}
 		]);
 }).call(this);
+
 (function() {
 	'use strict';
 	angular.module('app.controller.admin', [])
@@ -258,7 +294,9 @@
 			'socket',
 			'localStorage',
 			'Online',
-			function ($scope, $http, Auth, socket, localStorage, Online) {
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, Auth, socket, localStorage, Online, apiToken, $dialogs) {
 				/**
 				 * Temp Users
 				 */
@@ -277,19 +315,21 @@
 					}
 					catch (err) {
 						// no data
-						console.log('No Data');
+						//console.log('No Data');
+						$dialogs.error('No Data','The online check has failed.');
 					}
 				}
 				else {
 					// initial api call for tempUsers
-					$http.get('api/tempUsers')
+					$http.get(apiToken + '/tempUsers')
 						.success(function(users) {
 							// cache api results in localStorage
 							localStorage.set('tempUsers', angular.toJson(users));
 							$scope.tempUsers = users;
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Temp Users Error','There was an error generating a temp user.');
 						});
 				}
 				
@@ -300,12 +340,13 @@
 				 */
 				$scope.declineUser = function($index) {
 					var id = $scope.tempUsers[$index]._id;
-					$http.get('api/tempUsers/' + id + '/decline')
+					$http.get(apiToken + '/tempUsers/' + id + '/decline')
 						.success(function() {
 							socket.emit('tempUser:update');
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('User Decline Error','There was an error declining the user.');
 						});
 				};
 
@@ -316,13 +357,14 @@
 				 */
 				$scope.acceptUser = function($index) {
 					var id = $scope.tempUsers[$index]._id;
-					$http.get('api/tempUsers/' + id + '/accept/user')
+					$http.get(apiToken + '/tempUsers/' + id + '/accept/user')
 						.success(function() {
 							socket.emit('tempUser:update');
 							socket.emit('user:update');
 						})
 						.error(function() {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Accept User Error','There was an error accepting the user.');
 						});
 				};
 
@@ -333,13 +375,14 @@
 				 */
 				$scope.acceptAdmin = function($index) {
 					var id = $scope.tempUsers[$index]._id;
-					$http.get('api/tempUsers/' + id + '/accept/admin')
+					$http.get(apiToken + '/tempUsers/' + id + '/accept/admin')
 						.success(function() {
 							socket.emit('tempUser:update');
 							socket.emit('user:update');
 						})
 						.error(function() {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Accept Admin Error','There was an error accepting an admin.');
 						});
 				};
 				// end Temp Users
@@ -361,17 +404,19 @@
 					}
 					catch (err) {
 						// no data
-						console.log('No Data');
+						//console.log('No Data');
+						$dialogs.error('Online Check Error','There was an error chacking your online status.');
 					}
 				}
 				else {
-					$http.get('api/users')
+					$http.get(apiToken + '/users')
 						.success(function(users) {
 							localStorage.set('users', angular.toJson(users));
 							$scope.users = users;
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Token Error','There was an error accepting your token.');
 						});
 						
 				}
@@ -383,59 +428,16 @@
 				 */
 				$scope.removeUser = function($index) {
 					var id = $scope.users[$index]._id;
-					$http.post('api/users/' + id + '/remove')
+					$http.post(apiToken + '/users/' + id + '/remove')
 						.success(function() {
 							socket.emit('user:update');
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Remove User Error','There was an error removing a user.');
 						});
 				};
 				// end users
-
-				/**
-				 * Bowlers
-				 */
-				 // socket
-				socket.on('newBowler:update', function(bowlers) {
-					localStorage.set('bowlers', angular.toJson(bowlers));
-					$scope.bowlers = bowlers;
-				});
-				
-				if (!Online.check()) { // offline
-					try {
-						// try localStorage for last stored api results
-						localStorage.get('bowlers').then(function(bowlers) {
-							$scope.bowlers = angular.fromJson(bowlers);
-						});
-					}
-					catch (err) {
-						// no data
-						console.log('No Data');
-					}
-				}
-				else {
-					// initial api call for bowlers
-					$http.get('api/bowlers')
-						.success(function(bowlers) {
-							localStorage.set('bowlers', angular.toJson(bowlers));
-							$scope.bowlers = bowlers;
-						})
-						.error(function(err) {
-							console.log(err);
-						});
-				}
-				
-				$scope.removeBowler = function($index) {
-					var id = $scope.bowlers[$index]._id;
-					$http.delete('api/bowlers/' + id + '')
-						.success(function() {
-							socket.emit('newBowler:update');
-						})
-						.error(function(err) {
-							console.log(err);
-						});
-				};
 
 				/**
 				 * News
@@ -457,18 +459,20 @@
 					}
 					catch (err) {
 						// no data
-						console.log('No Data');
+						//console.log('No Data');
+						$dialogs.error('Online Check Error','There was an error checking your online status.');
 					}
 				}
 				else {
 					// initial api call for news
-					$http.get('api/news')
+					$http.get(apiToken + '/news')
 						.success(function(news) {
 							localStorage.set('news', angular.toJson(news));
 							$scope.news = news;
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Error Getting News','There was an error getting the news.');
 						});
 				}
 				/**
@@ -476,7 +480,7 @@
 				 * posts a news item
 				 */
 				$scope.addNews = function() {
-					$http.post('api/news', {
+					$http.post(apiToken + '/news', {
 						author: $scope.newNews.author,
 						title: $scope.newNews.title,
 						body: $scope.newNews.body
@@ -484,9 +488,11 @@
 					.success(function() {
 						// update view
 						socket.emit('news:update');
+						$scope.newNews = {};
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Error Getting News','There was an error getting the news.');
 					});
 				};
 				/**
@@ -495,17 +501,63 @@
 				 * @ {String} id
 				 */
 				$scope.removeNews = function(id) {
-					$http.delete('api/news/' + id)
+					$http.delete(apiToken + '/news/' + id)
 						.success(function() {
 							socket.emit('news:update');
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Error Removing News','There was an error removing the news.');
+						});
+				};
+
+				/**
+				 * Posts
+				 */
+				socket.on('post:update', function(posts) {
+					localStorage.set('posts', angular.toJson(posts));
+					$scope.posts = posts.reverse();
+				});
+				if (!Online.check()) { // offline
+					try {
+						// try localStorage for last stored api results
+						localStorage.get('posts').then(function(posts) {
+							$scope.posts = angular.fromJson(posts).reverse();
+						});
+					}
+					catch (err) {
+						// no data
+						//console.log('No Data');
+						$dialogs.error('Error Checking Online','There was an error checking your online status.');
+					}
+				}
+				else {
+					// initial api call for posts
+					$http.get(apiToken + '/posts')
+						.success(function(posts) {
+							localStorage.set('posts', angular.toJson(posts));
+							$scope.posts = posts.reverse();
+						})
+						.error(function(err) {
+							//console.log(err);
+							$dialogs.error('Error Retrieving Posts','There was an error retrieving your posts.');
+						});
+				}
+
+				$scope.removePost = function(id) {
+					$http.delete(apiToken + '/posts/' + id)
+						.success(function() {
+							socket.emit('post:update');
+						})
+						.error(function(err) {
+							//console.log(err);
+							$dialogs.error('Error Removing Post','There was an error removing your post.');
 						});
 				};
 			}
 		]);
 }).call(this);
+
 (function() {
 	'use strict';
 	angular.module('app.controller.blog', [])
@@ -514,38 +566,40 @@
 			'$http',
 			'$modal',
 			'socket',
-			'Auth',
 			'localStorage',
 			'Online',
-			function ($scope, $http, $modal, socket, Auth, localStorage, Online) {
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, $modal, socket, localStorage, Online, apiToken, $dialogs) {
 				socket.on('post:update', function(posts) {
 					localStorage.set('posts', angular.toJson(posts));
-					$scope.posts = posts;
+					$scope.posts = posts.reverse();
 				});
-				$scope.admin = (Auth.user.access === 'admin') ? true : false;
 				$scope.reply = {};
 
 				if (!Online.check()) { // offline
 					try {
 						// try localStorage for last stored api results
 						localStorage.get('posts').then(function(posts) {
-							$scope.posts = angular.fromJson(posts);
+							$scope.posts = angular.fromJson(posts).reverse();
 						});
 					}
 					catch (err) {
 						// no data
-						console.log('No Data');
+						//console.log('No Data');
+						$dialogs.error('No Data','There was an error obtaining your online status.');
 					}
 				}
 				else {
 					// initial api call for posts
-					$http.get('api/posts')
+					$http.get(apiToken + '/posts')
 						.success(function(posts) {
 							localStorage.set('posts', angular.toJson(posts));
-							$scope.posts = posts;
+							$scope.posts = posts.reverse();
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('API Call Error','There was an API call error.');
 						});
 				}
 
@@ -556,91 +610,154 @@
 					});
 					modalInstance.result.then(function() {
 						socket.emit('post:update');
+					}, function() {
+						return false;
 					});
 				};
 				$scope.addReply = function(id) {
-					$http.post('api/posts/' + id + '/reply', $scope.reply)
+					$http.post(apiToken + '/posts/' + id + '/reply', $scope.reply)
 					.success(function() {
 						socket.emit('post:update');
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Reply Error','There was an error in adding your reply.');
 					});
 				};
 				$scope.removePost = function(id) {
-					$http.delete('api/posts/' + id)
+					$http.delete(apiToken + '/posts/' + id)
 						.success(function() {
-							console.log('Post removed.');
 							socket.emit('post:update');
 						})
 						.error(function(err) {
-							console.log(err);
+							//console.log(err);
+							$dialogs.error('Post Removal Error','There was an error removing your post.');
 						});
 				};
 			}
 		]);
 }).call(this);
-(function(angular) {
-	'use strict';
-	angular.module('app.controller.bowler', [])
-		.controller('BowlerCtrl',[
-			'$scope',
-			'$http',
-			'socket',
-			'Universities',
-			'localStorage',
-			'Online',
-			function ($scope, $http, socket, Universities, localStorage, Online) {
-				$scope.newBowler = {};
-				$scope.universities = Universities.get();
-				// socket
-				socket.on('newBowler:update', function(bowlers) {
-					localStorage.set('bowlers', angular.toJson(bowlers));
-					$scope.bowlers = bowlers;
-				});
 
-				if (!Online.check()) { // offline
-					try {
-						// try localStorage for last stored api results
-						localStorage.get('bowlers').then(function(bowlers) {
-							$scope.bowlers = angular.fromJson(bowlers);
-						});
-					}
-					catch (err) {
-						// no data
-						console.log('No Data');
-					}
-				}
-				else {
-					// initial api call for bowlers
-					$http.get('api/bowlers')
-						.success(function(bowlers) {
-							$scope.bowlers = bowlers;
-						})
-						.error(function(err) {
-							console.log(err);
-						});
-				}
-				
-				// createBowler
-				$scope.createBowler = function() {
-					$http.post('api/bowlers', {
-						name: $scope.newBowler.name,
-						university: $scope.newBowler.university.name
-					})
-					.success(function() {
-						// emit newBowler update
-						socket.emit('newBowler:update');
-						// clear newBowler input
-						$scope.newBowler = '';
-					})
-					.error(function(err) {
-						console.log(err);
-					});
-				};
-			}
-		]);
+(function(angular) {
+    'use strict';
+    angular.module('app.controller.bowler', [])
+        .controller('BowlerCtrl', [
+            '$scope',
+            '$http',
+            'socket',
+            'Universities',
+            'localStorage',
+            'Online',
+            'apiToken',
+            'Auth',
+            'Roster',
+            '$dialogs',
+            function($scope, $http, socket, Universities, localStorage, Online, apiToken, Auth, Roster, $dialogs) {
+                $scope.newBowler = {};
+                $scope.selectedBowlers = {};
+                $scope.bowlers = {};
+                $scope.roster = false;
+                $scope.selectionMessage = '';
+                // socket
+                socket.on('newBowler:update', function(bowlers) {
+                    localStorage.set('bowlers', angular.toJson(bowlers));
+                    $scope.bowlers = bowlers;
+                });
+
+                if (!Online.check()) { // offline
+                    try {
+                        // try localStorage for last stored api results
+                        localStorage.get('bowlers').then(function(bowlers) {
+                            $scope.bowlers = angular.fromJson(bowlers);
+                        });
+                    } catch (err) {
+                        // no data
+                        $dialogs.error('No Data','Sorry, no data is available at this time.');
+                    }
+                } else {
+                    // initial api call for bowlers
+                    $http.get(apiToken + '/bowlers/' + Auth.user.id)
+                        .success(function(bowlers) {
+                            localStorage.set('bowlers', angular.toJson(bowlers));
+                            $scope.bowlers = bowlers;
+                        })
+                        .error(function(err) {
+                            $dialogs.error('Data Unavailble','Sorry, no data is available at this time.');
+                        });
+                }
+                /**
+                 * selectionsChanged()
+                 * creates roster from selected bowlers
+                 */
+                $scope.selectionsChanged = function() {
+                    var arr = [],
+                        index = 0;
+                    for (var i in $scope.bowlers) {
+                        if ($scope.selectedBowlers.length > 6) {
+                            $dialogs.notify('You selected too many bowlers', 'You may only select 6 bowlers to add to your roster.');
+                            $scope.selectionMessage = 'You may only select 6 bowlers.';
+                            return;
+                        }
+                        // get selected bowler data from $scope.bowlers
+                        if ($scope.selectedBowlers.indexOf($scope.bowlers[i]._id) !== -1) {
+                            if ($scope.selectionMessage !== '') {
+                                $scope.selectionMessage = '';
+                            }
+                            arr.push({
+                                id: $scope.bowlers[i]._id,
+                                name: $scope.bowlers[i].name,
+                                index: index // index for newgame dropdown
+                            });
+                            index++;
+                        }
+                    }
+                    if (arr.length !== 0) {
+                        $scope.roster = arr;
+                    }
+                    Roster.bowlers = arr;
+                    return;
+                };
+
+
+                /**
+                 * createBowler()
+                 * creates a bowler and adds to users roster
+                 */
+                $scope.createBowler = function() {
+                    if ($scope.bowlers.length !== 26) { // limit 26 to a roster
+                        $http.post(apiToken + '/bowlers/' + Auth.user.id, {
+                            name: $scope.newBowler.name,
+                            university: Auth.user.university
+                        })
+                            .success(function() {
+                                // emit newBowler update
+                                socket.emit('newBowler:update', Auth.user.id);
+                                // clear newBowler input
+                                $scope.newBowler = '';
+                            })
+                            .error(function(err) {
+                                $dialogs.error('Error Creating Bowler','There was an error creating your new bowler. Please try again...');
+                            });
+                    } else {
+                        $dialogs.error('Error Creating Bowler','You have reached your roster limit.');
+                    }
+
+                };
+
+                $scope.newSeason = function() {
+                    $http.post(apiToken + '/newseason', {id: Auth.user.id})
+                        .success(function() {
+                            socket.emit('newBowler:update', Auth.user.id);
+                            $dialogs.notify('Your season has been created','Your new season has been created.');
+                        })
+                        .error(function(err) {
+                            $dialogs.error('Error Creating Season','There was an error creating your new season. Please Try again...');
+                        });
+                };
+            }
+        ]);
 }(angular));
+
 (function() {
 	'use strict';
 	angular.module('app.controller.contact', [])
@@ -648,7 +765,8 @@
 			'$scope',
 			'$http',
 			'$modalInstance',
-			function ($scope, $http, $modalInstance) {
+			'$dialogs',
+			function ($scope, $http, $modalInstance, $dialogs) {
 				$scope.contact = {};
 				/* cancel
 				 * dismisses the modal
@@ -666,13 +784,15 @@
 						$modalInstance.close();
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Send Message Error','Your message could not be sent.');
 					});
 				};
 			}
 		]);
 }).call(this);
-(function(angular) {
+
+(function() {
 	'use strict';
 	angular.module('app.controller.login', [])
 		.controller('LoginCtrl', [
@@ -716,7 +836,7 @@
 			};
 		}
 	]);
-}(angular));
+}).call(this);
 (function() {
     'use strict';
     angular.module('app.controller.main', [])
@@ -726,35 +846,36 @@
             'socket',
             'localStorage',
             'Online',
-            function($scope, $http, socket, localStorage, Online) {
+            'apiToken',
+            '$dialogs',
+            function($scope, $http, socket, localStorage, Online, apiToken, $dialogs) {
                 socket.on('news:update', function(news) {
-                    $scope.news = news;
+                    $scope.news = news.reverse();
                 });
-
-                if (!Online.check()) { // offline
+                if (!Online.check()) {
                     try {
                         // try localStorage for last stored api results
                         localStorage.get('news').then(function(news) {
-                            $scope.news = angular.fromJson(news);
+                            $scope.news = angular.fromJson(news).reverse();
                         });
                     } catch (err) {
                         // no data
-                        console.log('No Data');
+                        $dialogs.error('No Data Available','Sorry, there is no data available at this time.');
                     }
                 } else {
-                    // initial api call for news
-                    $http.get('api/news')
+                    $http.get(apiToken + '/news')
                         .success(function(news) {
                             localStorage.set('news', angular.toJson(news));
-                            $scope.news = news;
+                            $scope.news = news.reverse();
                         })
                         .error(function(err) {
-                            console.log(err);
+                            $dialogs.error('Error','There was an error retrieving news articles.');
                         });
                 }
             }
         ]);
 }).call(this);
+
 /**
  * app.contorller.navigation module
  */
@@ -764,12 +885,20 @@
 		.controller('NavigationCtrl', [
 		// Dependencies
 		'$scope',
+		'$location',
 		'$modal',
 		'Auth',
-		function ($scope, $modal, Auth) {
+		function ($scope, $location, $modal, Auth) {
 			$scope.isCollapsed = true;
 			$scope.user = Auth.user.username;
 			$scope.admin = (Auth.user.access === 'admin') ? true : false;
+			/**
+			 * isActive
+			 * return a boolean specifying if a view is active
+			 */
+			$scope.isActive = function(view) {
+				return view === $location.path();
+			};
 			
 			/**
 			 * openLoginModal
@@ -812,17 +941,30 @@
 }(angular));
 (function(angular) {
     'use strict';
-    angular.module('app.controller.newGame', [])
-        .controller('NewGameCtrl', [
+    angular.module('app.controller.newBakerGame', [])
+        .controller('NewBakerGameCtrl', [
             '$scope',
-            '$routeParams',
-            'socket',
-            function($scope, $routeParams, socket) {
-                $scope.id = $routeParams.id; // bowler id
-
+            'Roster',
+            function($scope, Roster) {
+                $scope.game = 'baker';
+                $scope.bowlers = Roster.bowlers;
             }
         ]);
 }(angular));
+
+(function(angular) {
+    'use strict';
+    angular.module('app.controller.newGame', [])
+        .controller('NewGameCtrl', [
+            '$scope',
+            'Roster',
+            function($scope, Roster) {
+                $scope.game = 'tenpin';
+                $scope.bowlers = Roster.bowlers;
+            }
+        ]);
+}(angular));
+
 (function() {
 	'use strict';
 	angular.module('app.controller.post', [])
@@ -830,10 +972,12 @@
 			'$scope',
 			'$http',
 			'$modalInstance',
-			function ($scope, $http, $modalInstance) {
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, $modalInstance, apiToken, $dialogs) {
 				$scope.post = {};
 				$scope.submitPost = function() {
-					$http.post('api/posts', {
+					$http.post(apiToken + '/posts', {
 						author: $scope.post.author,
 						body: $scope.post.body,
 						title: $scope.post.title
@@ -842,19 +986,26 @@
 						$modalInstance.close();
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Error Submitting Post','There was an error submitting your post.');
 					});
+				};
+				$scope.cancel = function() {
+					$modalInstance.dismiss('cancel');
 				};
 			}
 		]);
 }).call(this);
+
 (function() {
 	'use strict';
 	angular.module('app.controller.prospects', [])
 		.controller('ProspectsCtrl', [
 			'$scope',
 			'$http',
-			function ($scope, $http) {
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, apiToken, $dialogs) {
 				var userArray = [];
 				$scope.prospect = {};
 				
@@ -881,9 +1032,9 @@
 				];
 
 				// returns a list of coaches for select element
-				$http.get('api/users')
+				$http.get(apiToken + '/users')
 					.success(function(users) {
-						console.log(users);
+						//console.log('Users',users);
 						var i;
 						for (i = 0; i < users.length; i++) {
 							// push coach object
@@ -896,7 +1047,8 @@
 						$scope.coaches = userArray;
 					}).
 					error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Token Error','Your token could not be validated at this time.');
 					});
 
 				$scope.sendToCoach = function() {
@@ -927,15 +1079,18 @@
 						message: $scope.prospect.message,
 					})
 					.success(function() {
-						console.log('Message Sent.');
+						//console.log('Message Sent.');
+						$dialogs.notify('Message Sent','Your Message');
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Message Send Error','Your message could not be sent at this time.');
 					});
 				};
 			}
 		]);
 }).call(this);
+
 (function() {
     'use strict';
     angular.module('app.controller.rankings', [])
@@ -946,11 +1101,14 @@
             'socket',
             'localStorage',
             'Online',
-            function($scope, $http, $modal, socket, localStorage, Online) {
-                var getGames, createGameObject, analyzeGameData, createAnalyzedDataArray;
+            'apiToken',
+            '$dialogs',
+            function($scope, $http, $modal, socket, localStorage, Online, apiToken, $dialogs) {
+                var getPlayers, getGames, analyzeGameData, createAnalyzedDataArray;
                 $scope.teamData = [];
                 $scope.selectedTeams = [];
                 $scope.message = '';
+
                 function reset() {
                     $scope.selectedTeams = [];
                 }
@@ -975,91 +1133,64 @@
                 });
                 socket.on('stats:update', function(stats) {
                     localStorage.set('stats', angular.toJson(stats));
-                    $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                    $scope.teamData = createAnalyzedDataArray(analyzeGameData(getGames(getPlayers(stats))));
                 });
 
-                if (!Online.check()) { // offline
+                if (!Online.check()) {
                     try {
                         // try localStorage for last stored api results
                         localStorage.get('stats').then(function(stats) {
-                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(angular.fromJson(stats))))]);
+                            $scope.teamData = $scope.teamData = createAnalyzedDataArray(analyzeGameData(getGames(getPlayers(angular.fromJson(stats)))));
                         });
-                    }
-                    catch (err) {
+                    } catch (err) {
                         // no data
-                        console.log('No Data');
+                        $dialogs.error('Data Unavailble','Sorry, no data is available at this time.');
                     }
-                }
-                else {
-                    // initial api call for stats
-                    $http.get('api/teams')
+                } else {
+                    $http.get(apiToken + '/teams')
                         .success(function(stats) {
                             localStorage.set('stats', angular.toJson(stats));
-                            $scope.teamData = createAnalyzedDataArray([analyzeGameData(createGameObject(getGames(stats)))]);
+                            $scope.teamData = createAnalyzedDataArray(analyzeGameData(getGames(getPlayers(stats))));
                         })
                         .error(function(err) {
-                            console.log(err);
+                            $scope.teamData('Token Error',err);
                         });
                 }
 
-                
-                
-                $scope.gridOptions = {
-                    data: 'teamData',
-                    columnDefs: [
-                        {field:'name', displayName: 'University'},
-                        /*
-                        {field:'pinCount', displayName: 'Pin Count'},
-                        {field:'rollCount', displayName: 'Roll Count'},
-                        {field:'gutterBalls', displayName: 'Gutter Balls'},
-                        {field:'strikes', displayName: 'Strikes'},
-                        {field:'spares', displayName: 'Spares'},
-                        */
-                        {field:'strikePercentage', displayName: 'Strike %'},
-                        {field:'sparePercentage', displayName: 'Spare %'},
-                        {field:'gamesPlayed', displayName: 'Games Played'}
-                    ],
-                    selectedItems: $scope.selectedTeams 
-                };
-                createAnalyzedDataArray = function(data) {
-                    var arr = [];
-                    for (var key in data[0]) {
-                        arr.push(data[0][key]);
+                getPlayers = function(stats) {
+                    var myObj = {};
+                    for (var i = 0; i < stats.length; i++) {
+                        for (var o = 0; o < stats[i].roster.length; o++) {
+                            if (!myObj.hasOwnProperty(stats[i].university)) {
+                                myObj[stats[i].university] = {
+                                    name: stats[i].university,
+                                    players: [stats[i].roster[o]]
+                                };
+                            } else {
+                                myObj[stats[i].university].players.push(stats[i].roster[o]);
+                            }
+                        }
                     }
-                    return arr;
+                    return myObj;
                 };
 
                 getGames = function(data) {
-                    var arr = [],
-                        i;
-                    for (i = 0; i < data.length; i++) {
-                        if (data[i].games.length > 0) {
-                            arr.push({
-                                university: data[i].university,
-                                game: data[i].games
-                            });
+                    var myObj = {};
+                    for (var university in data) {
+                        for (var i = 0;  i < data[university].players.length; i++) {
+                            if (!myObj.hasOwnProperty(university)) {
+                                myObj[university] = {
+                                    name: university,
+                                    games: data[university].players[i].games
+                                };
+                            } else {
+                                for (var o = 0; o < data[university].players[i].games.length; o++) {
+                                    myObj[university].games.push(data[university].players[i].games[o]);
+                                }
+                            }
                         }
                     }
-                    return arr;
-                };
-
-                createGameObject = function(data) {
-                    var myObj = {};
-                    Object.keys(data).forEach(function(key) {
-                        if (!myObj.hasOwnProperty(data[key].university)) {
-                            myObj[data[key].university] = {
-                                games: [],
-                                name: data[key].university
-                            };
-                        }
-                        if (data[key].game.length > 1) {
-                            for (var i = 0; i < data[key].game.length; i++) {
-                                myObj[data[key].university].games.push(data[key].game[i]);
-                            }
-                        } else if (data[key].game.length === 1) {
-                            myObj[data[key].university].games.push(data[key].game[0]);
-                        }
-                    });
+                    //console.log('Games',myObj);
                     return myObj;
                 };
 
@@ -1076,7 +1207,9 @@
                             strikePercentage: 0,
                             sparePercentage: 0,
                             name: undefined,
-                            gamesPlayed: 0
+                            gamesPlayed: 0,
+                            nineMade: 0,
+                            nineCount: 0
                         };
                         if (gameObj[key].games.length > 1) {
                             for (var i = 0; i < gameObj[key].games.length; i++) {
@@ -1089,6 +1222,8 @@
                                 model.sparePercentage += gameObj[key].games[i].sparePercentage;
                                 model.name = gameObj[key].name;
                                 model.gamesPlayed = gameObj[key].games.length;
+                                model.nineMade += gameObj[key].games[i].nineMade;
+                                model.nineCount += gameObj[key].games[i].nineCount;
                             }
                             model.strikePercentage = Math.round(model.strikePercentage / model.gamesPlayed) / 100;
                             model.sparePercentage = Math.round(model.sparePercentage / model.gamesPlayed) / 100;
@@ -1099,6 +1234,8 @@
                             model.gutterBalls += gameObj[key].games[0].gutterBalls;
                             model.strikes += gameObj[key].games[0].strikes;
                             model.spares += gameObj[key].games[0].spares;
+                            model.nineMade += gameObj[key].games[0].nineMade;
+                            model.nineCount += gameObj[key].games[0].nineCount;
                             model.strikePercentage += Math.round(gameObj[key].games[0].strikePercentage) / 100;
                             model.sparePercentage += Math.round(gameObj[key].games[0].sparePercentage) / 100;
                             model.name = gameObj[key].name;
@@ -1106,12 +1243,67 @@
                             scoreObj[key] = model;
                         }
                     }
-                    
+                    //console.log('scoreObj',scoreObj);
                     return scoreObj;
                 };
+
+                createAnalyzedDataArray = function(data) {
+                    var arr = [];
+                    for (var key in data) {
+                        arr.push(data[key]);
+                    }
+                    return arr;
+                };
+
+                $scope.gridOptions = {
+                    data: 'teamData',
+                    columnDefs: [{
+                            field: 'name',
+                            displayName: 'University'
+                        },
+
+                        {
+                            field: 'pinCount',
+                            displayName: 'Pin Count'
+                        }, {
+                            field: 'rollCount',
+                            displayName: 'Roll Count'
+                        }, {
+                            field: 'gutterBalls',
+                            displayName: 'Gutter Balls'
+                        }, {
+                            field: 'strikes',
+                            displayName: 'Strikes'
+                        }, {
+                            field: 'spares',
+                            displayName: 'Spares'
+                        },
+                        {
+                            field: 'nineCount',
+                            displayName: 'Nine Count'
+                        },
+                        {
+                            field: 'nineMade',
+                            displayName: 'Nine Made'
+                        },
+                        {
+                            field: 'strikePercentage',
+                            displayName: 'Strike %'
+                        }, {
+                            field: 'sparePercentage',
+                            displayName: 'Spare %'
+                        }, {
+                            field: 'gamesPlayed',
+                            displayName: 'Games Played'
+                        }
+                    ],
+                        selectedItems: $scope.selectedTeams
+                    };
+
             }
         ]);
 }).call(this);
+
 (function() {
 	'use strict';
 	angular.module('app.controller.team', [])
@@ -1120,35 +1312,10 @@
 		'$modalInstance',
 		'$http',
 		'team',
-		function ($scope, $modalInstance, $http, team) {
-			var pinCount = [], strikes = [], spares = [], gutters = [], rolls = [];
-			var sum = function(data) {
-                var sum = 0, length = data.length, i;
-                for (i = 0; i < length; i++) {
-                    sum += data[i];
-                }
-                return sum;
-            };
-
+		'apiToken',
+		function ($scope, $modalInstance, $http, team, apiToken) {
 			$scope.team = team[0];
-			$scope.teamData = undefined;
-			$scope.games = undefined;
-			$scope.stats = [0,0,0];
-			$http.get('api/teams/' + $scope.team.name)
-				.success(function(data) {
-					$scope.teamData = data[0];
-					$scope.games = data[0].games;
-					console.log(data[0].games);
-					for(var i in data[0].games) {
-						pinCount.push(data[0].games[i].pinCount);
-						strikes.push(data[0].games[i].strikes);
-						spares.push(data[0].games[i].spares);
-						gutters.push(data[0].games[i].gutterBalls);
-						rolls.push(data[0].games[i].rollCount);
-					}
-
-					$scope.stats = [sum(pinCount), sum(strikes), sum(spares), sum(gutters), sum(rolls)];
-				});
+			$scope.stats = [$scope.team.pinCount, $scope.team.strikes, $scope.team.spares, $scope.team.gutterBalls, $scope.team.rollCount,];
 			$scope.ok = function() {
 				$modalInstance.close();
 			};
@@ -1172,6 +1339,7 @@
 		'app.controller.prospects',
 		'app.controller.admin',
 		'app.controller.newGame',
+        'app.controller.newBakerGame',
 		'app.controller.bowler',
 		'app.controller.team',
 		'app.controller.account',
@@ -1179,6 +1347,7 @@
 		'app.controller.post'
 	]);
 }(angular));
+
 (function() {
 	angular.module('app.directive.bars', []).directive('bars', [
 		function() {
@@ -1249,7 +1418,9 @@
 	angular.module('app.directive.replies', []).directive('replies', [
 		'$http',
 		'socket',
-		function($http, socket) {
+		'apiToken',
+		'$dialogs',
+		function($http, socket, apiToken, $dialogs) {
 			return {
 				restrict: 'A',
 				replace: true,
@@ -1262,12 +1433,13 @@
 					$scope.replies.reverse();
 					$scope.reply = {};
 					$scope.addReply = function() {
-						$http.post('api/posts/' + $scope.id + '/reply', $scope.reply)
+						$http.post(apiToken + '/posts/' + $scope.id + '/reply', $scope.reply)
 						.success(function() {
 							socket.emit('post:update');
+							$dialogs.notify('Success','Your reply has been posted.');
 						})
 						.error(function(err) {
-							console.log(err);
+							$dialogs.error('Error','There was an error posting your reply, please try again.');
 						});
 					};
 				}
@@ -1275,12 +1447,15 @@
 		}
 	]);
 }).call(this);
+
 (function() {
     'use strict';
     angular.module('app.directive.scoreCard', []).directive('scoreCard', [
         '$http',
         'socket',
-        function($http, socket) {
+        'Auth',
+        'apiToken',
+        function($http, socket, Auth, apiToken) {
             return {
                 restrict: 'EA',
                 scope: {
@@ -1296,12 +1471,24 @@
                     $scope.frameScores = [];
                     $scope.rollDisplay = '';
                     $scope.stats = {};
+                    $scope.nineCount = 0;
+                    $scope.nineMade = 0;
                     $scope.gameOver = false;
                     $scope.addRoll = function(pins) {
+                        var rolls = $scope.rollDisplay.split('');
                         $scope.rolls.push(pins);
                         $scope.rollCount++;
                         $scope.frameScores = $scope.$eval('rolls | frameScores');
                         $scope.rollDisplay = $scope.$eval('rolls | rollDisplay');
+                        if (pins === 9 && isSecondRoll()) {
+                            $scope.nineCount++;
+                        }
+                        if (pins === 1 && !isSecondRoll()) {
+                            if (rolls[rolls.length - 1] === '9') {
+                                $scope.nineMade++;
+                            }
+                        }
+                        console.log('NineCount',$scope.nineCount);
                         if (isGameOver()) {
                             $scope.gameOver = true;
                             analyze();
@@ -1318,7 +1505,7 @@
                         return;
                     };
                     $scope.submitResults = function() {
-                        $http.post('api/bowlers/' + $scope.id, {
+                        $http.post(apiToken + '/newgame/' + $scope.id + '/' + Auth.user.id, {
                             game: {
                                 pinCount: $scope.stats.pinCount,
                                 rollCount: $scope.stats.rollCount,
@@ -1327,7 +1514,9 @@
                                 spares: $scope.stats.spares,
                                 sparePercentage: $scope.stats.sparePercentage,
                                 strikePercentage: $scope.stats.strikePercentage,
-                                score: $scope.stats.score
+                                score: $scope.stats.score,
+                                nineMade: $scope.nineMade,
+                                nineCount: $scope.nineCount
                             }
                         })
                         .success(function() {
@@ -1368,6 +1557,7 @@
                             strikePercentage: strikes / $scope.rollCount * 100,
                             currentScore: $scope.frameScores[$scope.frameScores.length - 1]
                         };
+
                         return $scope.stats;
                     };
                     isGameOver = function() {
@@ -1396,10 +1586,193 @@
         }
     ]);
 }.call(this));
+
+(function() {
+    'use strict';
+    angular.module('app.directive.scoreCardBaker', []).directive('scoreCardBaker', [
+        '$http',
+        '$q',
+        'socket',
+        'Auth',
+        'apiToken',
+        '$dialogs',
+        function($http, $q, socket, Auth, apiToken, $dialogs) {
+            return {
+                restrict: 'EA',
+                scope: {
+                    id: '@'
+                },
+                templateUrl: 'templates/scorecard.html',
+                link: function($scope, $element, $attrs) {
+                    var isGameOver, isSecondRoll, isTenthFrame, isTenthFrameThirdRollSpareTry, isTooLargeForSpare, analyze;
+                    var totalFrames = 0;
+                    $scope.pinsArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                    $scope.frames = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                    $scope.myRoster = {};
+                    $scope.rolls = [];
+                    $scope.rollCount = 0;
+                    $scope.frameScores = [];
+                    $scope.rollDisplay = '';
+                    $scope.stats = {};
+                    $scope.nineCount = 0;
+                    $scope.nineMade = 0;
+                    $scope.gameOver = false;
+
+                    $scope.addRoll = function(pins) {
+                        var rolls = $scope.rollDisplay.split('');
+                        totalFrames = totalFrames + 1 / 2;
+                        $scope.rolls.push(pins);
+                        $scope.rollCount++;
+                        $scope.frameScores = $scope.$eval('rolls | frameScores');
+                        $scope.rollDisplay = $scope.$eval('rolls | rollDisplay');
+                        // create bowler stats object
+                        if (!$scope.myRoster[$scope.id]) {
+                            $scope.myRoster[$scope.id] = {};
+                            $scope.myRoster[$scope.id].id = $scope.id;
+                        }
+                        // get spares
+                        if (totalFrames % 1 === 0) {
+                            if ($scope.rolls[$scope.rolls.length - 1] + $scope.rolls[$scope.rolls.length - 2] === 10) {
+                                if (!$scope.myRoster[$scope.id].spares) {
+                                    $scope.myRoster[$scope.id].spares = 1;
+                                }
+                                else {
+                                    $scope.myRoster[$scope.id].spares++;
+                                }
+                            }
+
+                        }
+                        // get nine-count
+                        if (pins === 9 && isSecondRoll()) {
+                            if (!$scope.myRoster[$scope.id].nineCount) {
+                                $scope.myRoster[$scope.id].nineCount = 1;
+                            }
+                            else {
+                                $scope.myRoster[$scope.id].nineCount++;
+                            }
+                        }
+                        // get nine-made
+                        if (pins === 1 && !isSecondRoll()) {
+                            if (rolls[rolls.length - 1] === '9') {
+                                if (!$scope.myRoster[$scope.id].nineMade) {
+                                    $scope.myRoster[$scope.id].nineMade = 1;
+                                }
+                                else {
+                                    $scope.myRoster[$scope.id].nineMade++;
+                                }
+                            }
+                        }
+                        // get pincount
+                        if (!$scope.myRoster[$scope.id].pinCount) {
+                            $scope.myRoster[$scope.id].pinCount = pins;
+                        }
+                        else {
+                            $scope.myRoster[$scope.id].pinCount += pins;
+                        }
+
+
+                        // get roll count
+                        if (!$scope.myRoster[$scope.id].rolls) {
+                            $scope.myRoster[$scope.id].rolls = 1;
+                        }
+                        else {
+                            $scope.myRoster[$scope.id].rolls++;
+                        }
+                        // get gutters
+                        if (pins === 0) {
+                            if (!$scope.myRoster[$scope.id].gutterBalls) {
+                                $scope.myRoster[$scope.id].gutterBalls = 1;
+                            }
+                            else {
+                                $scope.myRoster[$scope.id].gutterBalls++;
+                            }
+                        }
+                        // get strikes
+                        if (pins === 10) {
+                            if (!$scope.myRoster[$scope.id].strikes) {
+                                $scope.myRoster[$scope.id].strikes = 1;
+                                totalFrames = totalFrames + 1 / 2;
+                            }
+                            else {
+                                $scope.myRoster[$scope.id].strikes++;
+                                totalFrames = totalFrames + 1 / 2;
+                            }
+                        }
+
+                        if (isGameOver()) {
+                            $scope.gameOver = true;
+                        }
+
+                        return;
+                    };
+
+                    $scope.reset = function() {
+                        $scope.rolls = [];
+                        $scope.frameScores = [];
+                        $scope.rollCount = 0;
+                        $scope.stats = {};
+                        $scope.rollDisplay = '';
+                        $scope.gameOver = false;
+                        $scope.myRoster = {};
+                        return;
+                    };
+                    $scope.submitResults = function() {
+                        var urlArr = [];
+                        for (var id in $scope.myRoster) {
+                            urlArr.push($http.post(apiToken + '/newgame/' + $scope.myRoster[id].id + '/' + Auth.user.id, {
+                                game: {
+                                    pinCount: $scope.myRoster[id].pinCount,
+                                    rollCount: $scope.myRoster[id].rolls,
+                                    gutterBalls: $scope.myRoster[id].gutterBalls,
+                                    strikes: $scope.myRoster[id].strikes,
+                                    spares: $scope.myRoster[id].spares,
+                                    score: $scope.frameScores[$scope.frameScores.length - 1],
+                                    nineMade: $scope.myRoster[id].nineMade,
+                                    nineCount: $scope.myRoster[id].nineCount,
+                                    sparePercentage: $scope.myRoster[id].spares / ($scope.myRoster[id].rolls - $scope.myRoster[id].strikes) * 100,
+                                    strikePercentage: $scope.myRoster[id].strikes / $scope.myRoster[id].rolls * 100
+                                }
+                            }));
+                        }
+                        $q.all(urlArr).then(function(results) {
+                            if (results) {
+                                $dialogs.notify('Success','Game results have been saved.');
+                            }
+                        });
+                    };
+
+                    isGameOver = function() {
+                        return $scope.frameScores.length === 10;
+                    };
+                    isSecondRoll = function() {
+                        return $scope.rollDisplay.length % 2 === 1;
+                    };
+                    isTooLargeForSpare = function(pins) {
+                        return pins + $scope.rolls[$scope.rolls.length - 1] > 10;
+                    };
+                    isTenthFrame = function() {
+                        return $scope.rollDisplay.length >= 17;
+                    };
+                    isTenthFrameThirdRollSpareTry = function() {
+                        var check = $scope.rollDisplay[19] !== 'X' && $scope.rollDisplay.length === 20;
+                        return check;
+                    };
+                    var disabled = $scope.disabled = function(pins) {
+                        var check = isGameOver() || isSecondRoll() && isTooLargeForSpare(pins) && !isTenthFrame() || isTenthFrameThirdRollSpareTry() && isTooLargeForSpare(pins);
+                        return check;
+                    };
+                    return disabled;
+                }
+            };
+        }
+    ]);
+}.call(this));
+
 (function(angular) {
 	'use strict';
-	angular.module('app.directives', ['app.directive.scoreCard','app.directive.replies','app.directive.bars']);
+	angular.module('app.directives', ['app.directive.scoreCard','app.directive.scoreCardBaker','app.directive.replies','app.directive.bars']);
 }(angular));
+
 (function() {
     'use strict';
     var FrameScorer;
@@ -1538,6 +1911,31 @@
 	'use strict';
 	angular.module('app.filters', ['app.filter.rollDisplay', 'app.filter.frameScore']);
 }(angular));
+function minErr(module) {
+    var stringify = function(arg) {
+        if (typeof arg === 'function') {
+            return arg.toString().replace(/ \{[\s\S]*$/, '');
+        } else if (typeof arg === 'undefined') {
+            return 'undefined';
+        } else if (typeof arg !== 'string') {
+            return JSON.stringify(arg);
+        }
+        return arg;
+    };
+    return function() {
+        var code = arguments[0],
+            prefix = '[' + (module ? module + ':' : '') + code + '] ',
+            message,
+            i;
+        message = prefix + 'MINERR_URL' + (module ? module + 'MINERR_SEPARATOR' : '') + code;
+        for (i = 1; i < arguments.length; i++) {
+            message = message + (i === 1 ? '?' : '&') + 'p' + (i - 1) + '=' +
+                encodeURIComponent(stringify(arguments[i]));
+        }
+        return new Error(message);
+    };
+}
+
 (function() {
     'use strict';
     angular.module('app.service.auth', [])
@@ -1546,13 +1944,18 @@
             '$location',
             '$q',
             '$timeout',
-            function($http, $location, $q, $timeout) {
+            'Online',
+            'localStorage',
+            'apiToken',
+            '$dialogs',
+            function($http, $location, $q, $timeout, Online, localStorage, apiToken, $dialogs) {
                 var auth = {};
                 // config
                 auth.user = {
                     username: false,
                     access: false,
-                    id: false
+                    id: false,
+                    university: false
                 };
                 auth.message = false;
 
@@ -1561,20 +1964,64 @@
                  * handles logging in a user
                  */
                 auth.login = function(username, password, cb) {
-                    $http.post('/login', {
-                        username: username,
-                        password: password
-                    })
-                        .success(function(user) {
-                            auth.user.username = user.username;
-                            auth.user.access = user.access;
-                            auth.user.id = user._id;
-                            auth.message = 'Authentication successful.';
-                            cb();
+                    if (!Online.check()) {/*console.log('im offline');*/} else {/*console.log('im online still');*/}
+                    if (!Online.check()) {
+                        try {
+                            //console.log('trying to login offline user.');
+                            localStorage.get('offlineUser').then(function(user) {
+                                var User = angular.fromJson(user);
+                                //console.log('User', User);
+                                //console.log('Username',User.username);
+                                if (!user) { console.log('no offline user'); return false; }
+                                if (username === User.username) {
+                                    //console.log('username match');
+                                    if (password === User.pass) {
+                                        //console.log('checking timestamp');
+                                        if (User.timestamp > new Date().getTime() - 21 * 24 * 60 * 60 * 1000) { // 21 Days
+                                            auth.user.username = User.username;
+                                            auth.user.access = User.access;
+                                            auth.user.id = User.id;
+                                            auth.user.university = User.university;
+                                            auth.message = 'Authentication successful.';
+                                            cb();
+                                        }
+                                        else {
+                                            //console.log('token out.');
+                                            $dialogs.notify('Token Invalid','Your token was not accepted.');
+                                        }
+                                    }
+                                    else {
+                                        //console.log('incorrect password.');
+                                        $dialogs.notify('Incorrect Password','Your password was incorrect.');
+                                    }
+                                }
+                                else {
+                                    //console.log('incorrect username.');
+                                    $dialogs.notify('Incorrect Username','Your username was incorrect.');
+                                }
+                            });
+                        }
+                        catch (e) {
+                            //console.log(e);
+                            $dialogs.error('Error Logging In','There was an error when attempting to log in.');
+                        }
+                    } else {
+                        $http.post('/login', {
+                            username: username,
+                            password: password
                         })
-                        .error(function(err) {
-                            auth.message = err;
-                        });
+                            .success(function(user) {
+                                auth.user.username = user.username;
+                                auth.user.access = user.access;
+                                auth.user.id = user._id;
+                                auth.user.university = user.university;
+                                auth.message = 'Authentication successful.';
+                                cb();
+                            })
+                            .error(function(err) {
+                                auth.message = err;
+                            });
+                    }
                 };
                 /**
                  * logout
@@ -1598,7 +2045,7 @@
                  * handles creating a new user
                  */
                 auth.createUser = function(user, cb) {
-                    console.log('Creating User', user.university.name);
+                    //console.log('Creating User', user.university.name);
                     $http.post('/register', {
                         username: user.username,
                         firstName: user.firstName,
@@ -1628,23 +2075,13 @@
                  */
                 auth.createAdmin = function(user, cb) {
                     $http.post('/registeradmin', {
-                        username: user.username,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        address: user.address,
-                        address2: user.address2,
-                        city: user.city,
-                        state: user.state,
-                        zipcode: user.zipcode,
-                        phone: user.phone,
-                        university: user.university,
-                        email: user.email,
-                        access: user.access,
-                        password: user.password
-                    })
+						username: user.username,
+						password: user.password
+					})
                         .success(function() {
-                            cb();
-                        })
+						console.log('admin created');
+						cb();
+					})
                         .error(function(err) {
                             auth.message = err;
                         });
@@ -1655,28 +2092,51 @@
                  */
                 auth.isLoggedIn = function() {
                     var defered = $q.defer();
-                    $http.get('/loggedin')
-                        .success(function(user) {
-                            if (user !== '0') {
-                                $timeout(function() {
-                                    defered.resolve();
-                                }, 0);
-                            } else {
-                                $timeout(function() {
-                                    defered.reject();
-                                }, 0);
-                                $location.url('/login');
-                            }
-                        });
-                    return defered.promise;
+                    if (!Online.check()) {
+                        try {
+                            //console.log('trying offline user.');
+                            //console.log('User', user);
+                            localStorage.get('offlineUser').then(function(user) {
+                                if (!user) { return defered.reject(); }
+                                if (user.username === Auth.user.username) {
+                                    if (user.password === Auth.user.password) {
+                                        return defered.resolve();
+                                    }
+                                    else {
+                                        return defered.reject('Incorrect Password.');
+                                    }
+                                }
+                                else {
+                                    return defered.reject('Incorrect Username.');
+                                }
+                            });
+                        }
+                        catch (e) {
+                            return defered.reject('No offline credentials.');
+                        }
+                    } else {
+                        $http.get('/loggedin')
+                            .success(function(user) {
+                                if (user !== '0') {
+                                    $timeout(function() {
+                                        defered.resolve();
+                                    }, 0);
+                                } else {
+                                    $timeout(function() {
+                                        defered.reject();
+                                    }, 0);
+                                    $location.url('/login');
+                                }
+                            });
+                        return defered.promise;
+                    }
                 };
                 /**
                  * login
                  * updates a users password
                  */
                 auth.updatePassword = function(id, password, cb) {
-                    console.log('updatePassword(): ' + id + ' ' + password);
-                    $http.post('/api/users/' + id + '/password', {
+                    $http.post(apiToken + '/users/' + id + '/password', {
                         password: password
                     })
                         .success(function() {
@@ -1691,6 +2151,7 @@
             }
         ]);
 }).call(this);
+
 (function(angular) {
     'use strict';
     angular.module('app.service.localStorage', [])
@@ -1784,7 +2245,7 @@
             }
         ]);
 }(angular));
-(function(angular) {
+(function() {
     'use strict';
     angular.module('app.service.online', [])
         .factory('Online', [
@@ -1818,7 +2279,18 @@
                 return online;
             }
         ]);
-}(angular));
+}).call(this);
+(function() {
+    'use strict';
+    angular.module('app.service.roster', [])
+        .factory('Roster', [
+            function() {
+                var roster = {};
+                roster.bowlers = [];
+                return roster;
+            }
+        ]);
+}).call(this);
 (function(angular) {
 	'use strict';
 	angular.module('app.service.socket', [])
@@ -2623,6 +3095,7 @@
 		'app.service.socket',
 		'app.service.localStorage',
 		'app.service.online',
-		'app.service.universities'
+		'app.service.universities',
+		'app.service.roster'
 	]);
 }(angular));

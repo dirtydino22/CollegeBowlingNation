@@ -7,30 +7,30 @@
             'socket',
             'localStorage',
             'Online',
-            function($scope, $http, socket, localStorage, Online) {
+            'apiToken',
+            '$dialogs',
+            function($scope, $http, socket, localStorage, Online, apiToken, $dialogs) {
                 socket.on('news:update', function(news) {
-                    $scope.news = news;
+                    $scope.news = news.reverse();
                 });
-
-                if (!Online.check()) { // offline
+                if (!Online.check()) {
                     try {
                         // try localStorage for last stored api results
                         localStorage.get('news').then(function(news) {
-                            $scope.news = angular.fromJson(news);
+                            $scope.news = angular.fromJson(news).reverse();
                         });
                     } catch (err) {
                         // no data
-                        console.log('No Data');
+                        $dialogs.error('No Data Available','Sorry, there is no data available at this time.');
                     }
                 } else {
-                    // initial api call for news
-                    $http.get('api/news')
+                    $http.get(apiToken + '/news')
                         .success(function(news) {
                             localStorage.set('news', angular.toJson(news));
-                            $scope.news = news;
+                            $scope.news = news.reverse();
                         })
                         .error(function(err) {
-                            console.log(err);
+                            $dialogs.error('Error','There was an error retrieving news articles.');
                         });
                 }
             }

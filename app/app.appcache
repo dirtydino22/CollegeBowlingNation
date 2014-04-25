@@ -1,7 +1,7 @@
 CACHE MANIFEST
-# 2014-03-28:v1
+# 2014-04-1:v1.00
 
-# Explicitly cached 'master intries'.
+# Explicitly cached 'master entries'.
 CACHE:
 index.html
 templates/main.html
@@ -19,15 +19,23 @@ templates/modals/modal.post.html
 templates/modals/modal.team.html
 css/app.css
 js/cbn.min.js
+socket.io/socket.io.js
+libs/bootstrap/dist/fonts/glyphicons-halflings-regular.eot
+libs/bootstrap/dist/fonts/glyphicons-halflings-regular.svg
+libs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf
+libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff
 libs/angular/angular.min.js
 libs/angular/angular-route.min.js
+libs/angular-ui-ng-grid/ng-grid.min.css
 libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js
 libs/jquery.js
-libs/bootstrap/dist/css/bootstrap.min.css
 libs/d3/d3.min.js
 libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js
 libs/angular/angular.min.js
-img/banner.gif
+libs/angular/angular-animate.min.js
+libs/animate/animate.min.css
+libs/bootstrap/dist/css/bootstrapTheme.min.css
+img/cbnLg.jpg
 
 # Resources that require the user to be online.
 NETWORK:

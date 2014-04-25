@@ -13,6 +13,7 @@
 		'app.controller.prospects',
 		'app.controller.admin',
 		'app.controller.newGame',
+        'app.controller.newBakerGame',
 		'app.controller.bowler',
 		'app.controller.team',
 		'app.controller.account',
