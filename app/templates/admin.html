@@ -39,17 +39,21 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h2>Bowlers</h2>
+			<h2>Posts</h2>
 		</div>
 		<div class="panel-body">
 			<table class="table">
 				<tr>
-					<th>Bowler Name</th>
-					<th>Remove Bowler</th>
+					<th>Date</th>
+					<th>Author</th>
+					<th>Tiltle</th>
+					<th>Delete</th>
 				</tr>
-				<tr ng-repeat="bowler in bowlers">
-					<td>{{bowler.name}}</td>
-					<td><button type="button" class="btn btn-danger" ng-click="removeBowler($index)"><i class="glyphicon glyphicon-minus-sign"></i></button></td>
+				<tr ng-repeat="post in posts">
+					<td>{{post.createdOn | date}}</td>
+					<td>{{post.author}}</td>
+					<td>{{post.title}}</td>
+					<td><button type="button" class="btn btn-danger" ng-click="removePost(post._id)"><i class="glyphicon glyphicon-minus-sign"></i></button></td>
 				</tr>
 			</table>
 		</div>

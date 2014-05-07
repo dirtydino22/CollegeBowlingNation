@@ -7,12 +7,20 @@
 		.controller('NavigationCtrl', [
 		// Dependencies
 		'$scope',
+		'$location',
 		'$modal',
 		'Auth',
-		function ($scope, $modal, Auth) {
+		function ($scope, $location, $modal, Auth) {
 			$scope.isCollapsed = true;
 			$scope.user = Auth.user.username;
 			$scope.admin = (Auth.user.access === 'admin') ? true : false;
+			/**
+			 * isActive
+			 * return a boolean specifying if a view is active
+			 */
+			$scope.isActive = function(view) {
+				return view === $location.path();
+			};
 			
 			/**
 			 * openLoginModal

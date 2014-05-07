@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
 	'use strict';
 	angular.module('app.controller.login', [])
 		.controller('LoginCtrl', [
@@ -42,4 +42,4 @@
 			};
 		}
 	]);
-}(angular));
+}).call(this);

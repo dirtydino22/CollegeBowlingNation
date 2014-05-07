@@ -1,41 +1,102 @@
-[90mGET /css/app.css [36m304 [90m13ms[0m
-[90mGET /libs/bootstrap/dist/css/bootstrap.min.css [36m304 [90m9ms[0m
-[90mGET /libs/d3/d3.min.js [36m304 [90m7ms[0m
-[90mGET /libs/jquery.js [36m304 [90m7ms[0m
-[90mGET /libs/angular-ui-ng-grid/ng-grid.min.css [36m304 [90m6ms[0m
-[90mGET /libs/angular/angular.min.js [36m304 [90m4ms[0m
-[90mGET /app.manifest [36m304 [90m7ms[0m
-[90mGET /libs/angular/angular-route.min.js [36m304 [90m408ms[0m
-[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m409ms[0m
-[90mGET /libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js [36m304 [90m408ms[0m
-[90mGET /js/cbn.min.js [32m200 [90m410ms - 38.38kb[0m
-[90mGET /templates/main.html [32m200 [90m4ms - 1019b[0m
-[90mGET /app.manifest [36m304 [90m1ms[0m
-[90mGET /img/banner.gif [36m304 [90m2ms[0m
-[90mGET /api/news [32m200 [90m53ms - 194b[0m
-[90mGET /templates/rankings.html [32m200 [90m1ms - 400b[0m
-[90mGET /templates/blog.html [32m200 [90m0ms - 461b[0m
-[90mGET /templates/replies.html [32m200 [90m3ms - 531b[0m
-[90mGET /templates/prospects.html [36m304 [90m2ms[0m
-[90mGET /templates/modals/modal.contact.html [36m304 [90m0ms[0m
-[90mGET /templates/modals/modal.login.html [36m304 [90m2ms[0m
+[90mGET /img/cbnLg.jpg [36m304 [90m8ms[0m
+[90mGET /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/news [36m304 [90m59ms[0m
+[90mGET /libs/bootstrap/dist/css/bootstrapTheme.min.css [36m304 [90m3ms[0m
+[90mGET /libs/angular-ui-ng-grid/ng-grid.min.css [36m304 [90m2ms[0m
+[90mGET /libs/animate/animate.min.css [36m304 [90m4ms[0m
+[90mGET /css/app.css [36m304 [90m4ms[0m
+[90mGET /libs/angular-dialog-service/dialogs.min.css [36m304 [90m3ms[0m
+[90mGET /libs/jquery.js [36m304 [90m1ms[0m
+[90mGET /libs/d3/d3.min.js [36m304 [90m3ms[0m
+[90mGET /libs/angular/angular.min.js [36m304 [90m420ms[0m
+[90mGET /libs/angular/angular-animate.min.js [36m304 [90m3ms[0m
+[90mGET /libs/angular/angular-route.min.js [36m304 [90m2ms[0m
+[90mGET /libs/angular/angular-sanitize.min.js [36m304 [90m1ms[0m
+[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m1ms[0m
+[90mGET /libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js [36m304 [90m0ms[0m
+[90mGET /libs/angular-dialog-service/dialogs.min.js [36m304 [90m1ms[0m
+[90mGET /app.appcache [32m200 [90m5ms - 1.14kb[0m
+[90mGET /js/cbn.min.js [32m200 [90m3ms - 49.34kb[0m
+[90mGET /libs/angular/angular-route.min.js [36m304 [90m2ms[0m
+[90mGET /templates/main.html [36m304 [90m3ms[0m
+[90mGET /img/cbnLg.jpg [36m304 [90m1ms[0m
+[90mGET / [36m304 [90m5ms[0m
+[90mGET /libs/angular/angular-animate.min.js [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular.min.js.map [36m304 [90m1ms[0m
+[90mGET /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/news [36m304 [90m54ms[0m
+[90mGET /templates/newgame.html [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-route.min.js.map [36m304 [90m1ms[0m
+[90mGET /index.html [36m304 [90m2ms[0m
+[90mGET /libs/angular/angular-animate.min.js.map [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-sanitize.min.js.map [36m304 [90m0ms[0m
+[90mGET /libs/angular/angular.js [36m304 [90m0ms[0m
+[90mGET /css/app.css [36m304 [90m1ms[0m
+[90mGET /libs/angular/MINERR_ASSET [33m404 [90m1ms[0m
+[90mGET /templates/main.html [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-route.js [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-animate.js [36m304 [90m2ms[0m
+[90mGET /libs/angular/angular-sanitize.js [36m304 [90m2ms[0m
+[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m1ms[0m
+[90mGET /templates/admin.html [36m304 [90m2ms[0m
+[90mGET /libs/bootstrap/dist/fonts/glyphicons-halflings-regular.woff [36m304 [90m2ms[0m
+[90mGET /templates/modals/modal.contact.html [36m304 [90m1ms[0m
+[90mGET /templates/modals/modal.login.html [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular.min.js [36m304 [90m2ms[0m
+[90mGET /libs/animate/animate.min.css [36m304 [90m1ms[0m
+[90mGET /templates/modals/modal.team.html [36m304 [90m2ms[0m
+[90mGET /templates/scorecard.html [36m304 [90m2ms[0m
+[90mGET /libs/angular-ui-ng-grid/ng-grid.min.css [36m304 [90m0ms[0m
+[90mGET /libs/jquery.js [36m304 [90m1ms[0m
+[90mGET /libs/bootstrap/dist/fonts/glyphicons-halflings-regular.svg [36m304 [90m1ms[0m
+[90mGET /libs/d3/d3.min.js [36m304 [90m0ms[0m
+[90mGET /libs/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf [36m304 [90m0ms[0m
+[90mGET /libs/bootstrap/dist/css/bootstrapTheme.min.css [36m304 [90m1ms[0m
+[90mGET /templates/replies.html [32m200 [90m1ms - 531b[0m
+[90mGET /libs/bootstrap/dist/fonts/glyphicons-halflings-regular.eot [36m304 [90m1ms[0m
+[90mGET /templates/rankings.html [32m200 [90m1ms - 371b[0m
+[90mGET /templates/modals/modal.post.html [36m304 [90m1ms[0m
+[90mGET /templates/prospects.html [36m304 [90m3ms[0m
+[90mGET /js/cbn.min.js [32m200 [90m1ms - 49.34kb[0m
+[90mGET /libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js [36m304 [90m1ms[0m
+[90mGET /templates/bowler.html [36m304 [90m1ms[0m
+[90mGET /templates/blog.html [32m200 [90m1ms - 598b[0m
+[90mGET /img/cbnLg.jpg [36m304 [90m1ms[0m
+[90mGET /libs/bootstrap/dist/css/bootstrapTheme.min.css [36m304 [90m1ms[0m
+[90mGET /libs/angular-ui-ng-grid/ng-grid.min.css [36m304 [90m5ms[0m
+[90mGET /libs/animate/animate.min.css [36m304 [90m6ms[0m
+[90mGET /libs/angular-dialog-service/dialogs.min.css [36m304 [90m5ms[0m
+[90mGET /css/app.css [36m304 [90m5ms[0m
+[90mGET /libs/jquery.js [36m304 [90m4ms[0m
+[90mGET /libs/d3/d3.min.js [36m304 [90m2ms[0m
+[90mGET /libs/angular/angular.min.js [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-route.min.js [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-animate.min.js [36m304 [90m2ms[0m
+[90mGET /libs/angular/angular-sanitize.min.js [36m304 [90m2ms[0m
+[90mGET /libs/ui-bootstrap/ui-bootstrap-tpls-0.9.0.min.js [36m304 [90m1ms[0m
+[90mGET /libs/angular-ui-ng-grid/ng-grid-2.0.7.min.js [36m304 [90m1ms[0m
+[90mGET /libs/angular-dialog-service/dialogs.min.js [36m304 [90m1ms[0m
+[90mGET /js/cbn.min.js [36m304 [90m1ms[0m
+[90mGET /app.appcache [36m304 [90m1ms[0m
+[90mGET /templates/main.html [36m304 [90m1ms[0m
+[90mGET /img/cbnLg.jpg [36m304 [90m1ms[0m
 [90mGET /libs/angular/angular.min.js.map [36m304 [90m1ms[0m
 [90mGET /libs/angular/angular-route.min.js.map [36m304 [90m1ms[0m
-[90mGET /libs/angular/angular.js [36m304 [90m0ms[0m
-[90mGET /libs/angular/MINERR_ASSET [33m404 [90m1ms[0m
+[90mGET /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/news [36m304 [90m54ms[0m
+[90mGET /libs/angular/angular-animate.min.js.map [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular-sanitize.min.js.map [36m304 [90m1ms[0m
+[90mGET /libs/angular/angular.js [36m304 [90m1ms[0m
+[90mGET /libs/angular/MINERR_ASSET [33m404 [90m0ms[0m
 [90mGET /libs/angular/angular-route.js [36m304 [90m0ms[0m
-[90mGET /api/users [36m304 [90m53ms[0m
-[90mPOST /login [32m200 [90m20681ms - 1.38kb[0m
-[90mGET /img/banner.gif [36m304 [90m110ms[0m
-[90mGET /api/news [32m200 [90m141ms - 194b[0m
-[90mPOST /login [32m200 [90m1161ms - 1.38kb[0m
-[90mGET /loggedin [36m304 [90m48ms[0m
-[90mGET /templates/account.html [36m304 [90m49ms[0m
-[90mGET /api/users/5330a961ba4cc1aa7930d885 [36m304 [90m101ms[0m
-[90mGET /img/banner.gif [36m304 [90m48ms[0m
-[90mGET /api/news [32m200 [90m93ms - 194b[0m
-[90mGET /api/teams [36m304 [90m104ms[0m
-[90mGET /templates/modals/modal.team.html [36m304 [90m48ms[0m
-[90mGET /api/teams/Morehead%20State [32m200 [90m97ms - 706b[0m
-[90mGET /api/teams/Morehead%20State [32m200 [90m100ms - 706b[0m
-[90mGET /api/teams/Texas%20State [32m200 [90m96ms - 745b[0m
+[90mGET /libs/angular/angular-animate.js [36m304 [90m0ms[0m
+[90mGET /libs/angular/angular-sanitize.js [36m304 [90m1ms[0m
+[90mGET /templates/modals/modal.login.html [36m304 [90m1ms[0m
+[90mPOST /login [32m200 [90m1154ms - 2.66kb[0m
+[90mGET /templates/bowler.html [36m304 [90m49ms[0m
+[90mGET /loggedin [36m304 [90m63ms[0m
+[90mGET /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/bowlers/533ce5279a003cc001071d1f [36m304 [90m106ms[0m
+[90mGET /loggedin [36m304 [90m59ms[0m
+[90mGET /templates/newgame.html [36m304 [90m59ms[0m
+[90mGET /templates/scorecard.html [36m304 [90m49ms[0m
+[90mPOST /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/newgame/535820c04bc6ae81063a880f/533ce5279a003cc001071d1f [32m200 [90m167ms - 4b[0m
+[90mPOST /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/newgame/535820c24bc6ae81063a8810/533ce5279a003cc001071d1f [32m200 [90m176ms - 4b[0m
+[90mGET /img/cbnLg.jpg [36m304 [90m61ms[0m
+[90mGET /api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg/news [36m304 [90m98ms[0m

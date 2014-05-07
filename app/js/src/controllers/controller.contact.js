@@ -5,7 +5,8 @@
 			'$scope',
 			'$http',
 			'$modalInstance',
-			function ($scope, $http, $modalInstance) {
+			'$dialogs',
+			function ($scope, $http, $modalInstance, $dialogs) {
 				$scope.contact = {};
 				/* cancel
 				 * dismisses the modal
@@ -23,7 +24,8 @@
 						$modalInstance.close();
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Send Message Error','Your message could not be sent.');
 					});
 				};
 			}

@@ -1,5 +1,5 @@
 <div class="banner">
-	<img class="img-responsive" src="img/banner.gif" alt="banner" width="" height="" />
+	<img class="img-responsive" src="img/cbnLg.jpg" alt="banner" width="" height="" />
 </div>
 <div class="content-wrap">
 	<div class="container-fluid about">
@@ -7,13 +7,15 @@
 		</p>
 	</div>
 	<div class="container">
-		<h2>News</h2>
-		<ul>
-			<li ng-repeat="item in news">
-				<p>{{item.date|date}}</p>
-				<p>{{item.author}}</p>
-				<p>{{item.title}}</p>
-				<p>{{item.body}}</p>
+		<h1>News</h1>
+		<ul class="news">
+			<li ng-repeat="item in news|limitTo:3">
+				<div class="well">
+					<p class="pull-right">{{item.createdOn|date}}</p>
+					<p>{{item.author}}</p>
+					<p>{{item.title}}</p>
+					<p>{{item.body}}</p>
+				</div>
 			</li>
 		</ul>
 	</div>

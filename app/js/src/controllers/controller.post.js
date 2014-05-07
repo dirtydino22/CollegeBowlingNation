@@ -5,10 +5,12 @@
 			'$scope',
 			'$http',
 			'$modalInstance',
-			function ($scope, $http, $modalInstance) {
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, $modalInstance, apiToken, $dialogs) {
 				$scope.post = {};
 				$scope.submitPost = function() {
-					$http.post('api/posts', {
+					$http.post(apiToken + '/posts', {
 						author: $scope.post.author,
 						body: $scope.post.body,
 						title: $scope.post.title
@@ -17,8 +19,12 @@
 						$modalInstance.close();
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Error Submitting Post','There was an error submitting your post.');
 					});
+				};
+				$scope.cancel = function() {
+					$modalInstance.dismiss('cancel');
 				};
 			}
 		]);

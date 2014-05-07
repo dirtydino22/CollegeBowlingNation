@@ -5,6 +5,7 @@
 		'app.service.socket',
 		'app.service.localStorage',
 		'app.service.online',
-		'app.service.universities'
+		'app.service.universities',
+		'app.service.roster'
 	]);
 }(angular));

@@ -3,7 +3,9 @@
     angular.module('app.directive.scoreCard', []).directive('scoreCard', [
         '$http',
         'socket',
-        function($http, socket) {
+        'Auth',
+        'apiToken',
+        function($http, socket, Auth, apiToken) {
             return {
                 restrict: 'EA',
                 scope: {
@@ -19,12 +21,24 @@
                     $scope.frameScores = [];
                     $scope.rollDisplay = '';
                     $scope.stats = {};
+                    $scope.nineCount = 0;
+                    $scope.nineMade = 0;
                     $scope.gameOver = false;
                     $scope.addRoll = function(pins) {
+                        var rolls = $scope.rollDisplay.split('');
                         $scope.rolls.push(pins);
                         $scope.rollCount++;
                         $scope.frameScores = $scope.$eval('rolls | frameScores');
                         $scope.rollDisplay = $scope.$eval('rolls | rollDisplay');
+                        if (pins === 9 && isSecondRoll()) {
+                            $scope.nineCount++;
+                        }
+                        if (pins === 1 && !isSecondRoll()) {
+                            if (rolls[rolls.length - 1] === '9') {
+                                $scope.nineMade++;
+                            }
+                        }
+                        console.log('NineCount',$scope.nineCount);
                         if (isGameOver()) {
                             $scope.gameOver = true;
                             analyze();
@@ -41,7 +55,7 @@
                         return;
                     };
                     $scope.submitResults = function() {
-                        $http.post('api/bowlers/' + $scope.id, {
+                        $http.post(apiToken + '/newgame/' + $scope.id + '/' + Auth.user.id, {
                             game: {
                                 pinCount: $scope.stats.pinCount,
                                 rollCount: $scope.stats.rollCount,
@@ -50,7 +64,9 @@
                                 spares: $scope.stats.spares,
                                 sparePercentage: $scope.stats.sparePercentage,
                                 strikePercentage: $scope.stats.strikePercentage,
-                                score: $scope.stats.score
+                                score: $scope.stats.score,
+                                nineMade: $scope.nineMade,
+                                nineCount: $scope.nineCount
                             }
                         })
                         .success(function() {
@@ -91,6 +107,7 @@
                             strikePercentage: strikes / $scope.rollCount * 100,
                             currentScore: $scope.frameScores[$scope.frameScores.length - 1]
                         };
+
                         return $scope.stats;
                     };
                     isGameOver = function() {

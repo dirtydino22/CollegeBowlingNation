@@ -1,6 +1,7 @@
 (function() {
     'use strict';
-    angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngGrid', 'app.controllers', 'app.services', 'app.directives', 'app.filters'])
+    angular.module('app', ['ngRoute', 'ngAnimate', 'ui.bootstrap', 'dialogs', 'ngGrid', 'app.controllers', 'app.services', 'app.directives', 'app.filters'])
+        .constant('apiToken', 'api/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOiJhcGkifQ.rw6L-dKVtRfMPF_iD8iskHPOixTv6s_rcsh6z00xayg')
         .config(function($routeProvider, $locationProvider, $httpProvider) {
             $httpProvider.interceptors.push(function($q, $location, Online) {
                 return {
@@ -18,7 +19,7 @@
 
                                 return config || $q.when(config);
                             }
-                            /* if request to api, then push the url 
+                            /* if request to api, then push the url
                              * string to Online.requests array
                              */
                             return Online.requests.push({
@@ -86,9 +87,18 @@
                         }
                     }
                 })
-                .when('/newgame/:id', {
+                .when('/startgame', {
                     templateUrl: 'templates/newgame.html',
                     controller: 'NewGameCtrl',
+                    resolve: {
+                        auth: function(Auth) {
+                            Auth.isLoggedIn();
+                        }
+                    }
+                })
+                .when('/startbaker', {
+                    templateUrl: 'templates/newgame.html',
+                    controller: 'NewBakerGameCtrl',
                     resolve: {
                         auth: function(Auth) {
                             Auth.isLoggedIn();
@@ -164,31 +174,28 @@
                     // make all requests
                     $q.all(uniqueArray(reqArray)).then(function(results) {
                         if (results) {
-                            console.log(uniqueArray(reqArray));
-                            console.log(results);
-                            console.log('Results were returned.');
-                            // emit offline:update event 
+                            // emit offline:update event
                             socket.emit('offline:update');
                             // remove made requests
                             Online.requests = [];
                         }
                     });
-                } else {
+                }
+                /*
+                else {
                     console.log('No Requests.');
                 }
+                */
             });
-        });
-    window.applicationCache.update();
-    // cache maifest listener
-    /*
-    window.addEventListener('load', function(e) {
-        window.applicationCache.addEventListener('updateready', function(e) {
-            if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-                if (confirm('A new version of this site is available. Load it?')) {
-                    window.location.reload();
+            /**
+             * Cache Manifest
+             */
+            $window.applicationCache.addEventListener('updateready', function(e) {
+                if ($window.applicationCache.status === $window.applicationCache.UPDATEREADY) {
+                    if (confirm('A new version of this site is available. Would you like to load it?')) {
+                        $window.location.reload();
+                    }
                 }
-            }
+            }, false);
         });
-    });
-    */
 }).call(this);

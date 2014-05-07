@@ -1,4 +1,4 @@
-(function(angular) {
+(function() {
     'use strict';
     angular.module('app.service.online', [])
         .factory('Online', [
@@ -32,4 +32,4 @@
                 return online;
             }
         ]);
-}(angular));
+}).call(this);

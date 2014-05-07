@@ -4,7 +4,9 @@
 		.controller('ProspectsCtrl', [
 			'$scope',
 			'$http',
-			function ($scope, $http) {
+			'apiToken',
+			'$dialogs',
+			function ($scope, $http, apiToken, $dialogs) {
 				var userArray = [];
 				$scope.prospect = {};
 				
@@ -31,9 +33,9 @@
 				];
 
 				// returns a list of coaches for select element
-				$http.get('api/users')
+				$http.get(apiToken + '/users')
 					.success(function(users) {
-						console.log(users);
+						//console.log('Users',users);
 						var i;
 						for (i = 0; i < users.length; i++) {
 							// push coach object
@@ -46,7 +48,8 @@
 						$scope.coaches = userArray;
 					}).
 					error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Token Error','Your token could not be validated at this time.');
 					});
 
 				$scope.sendToCoach = function() {
@@ -77,10 +80,12 @@
 						message: $scope.prospect.message,
 					})
 					.success(function() {
-						console.log('Message Sent.');
+						//console.log('Message Sent.');
+						$dialogs.notify('Message Sent','Your Message');
 					})
 					.error(function(err) {
-						console.log(err);
+						//console.log(err);
+						$dialogs.error('Message Send Error','Your message could not be sent at this time.');
 					});
 				};
 			}

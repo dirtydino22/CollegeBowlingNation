@@ -2,7 +2,9 @@
 	angular.module('app.directive.replies', []).directive('replies', [
 		'$http',
 		'socket',
-		function($http, socket) {
+		'apiToken',
+		'$dialogs',
+		function($http, socket, apiToken, $dialogs) {
 			return {
 				restrict: 'A',
 				replace: true,
@@ -15,12 +17,13 @@
 					$scope.replies.reverse();
 					$scope.reply = {};
 					$scope.addReply = function() {
-						$http.post('api/posts/' + $scope.id + '/reply', $scope.reply)
+						$http.post(apiToken + '/posts/' + $scope.id + '/reply', $scope.reply)
 						.success(function() {
 							socket.emit('post:update');
+							$dialogs.notify('Success','Your reply has been posted.');
 						})
 						.error(function(err) {
-							console.log(err);
+							$dialogs.error('Error','There was an error posting your reply, please try again.');
 						});
 					};
 				}
