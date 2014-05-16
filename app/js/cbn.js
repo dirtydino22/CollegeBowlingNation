@@ -837,6 +837,7 @@
 		}
 	]);
 }).call(this);
+
 (function() {
     'use strict';
     angular.module('app.controller.main', [])
@@ -948,6 +949,7 @@
             function($scope, Roster) {
                 $scope.game = 'baker';
                 $scope.bowlers = Roster.bowlers;
+                $scope.numberOfBowlers = Roster.bowlers.length;
             }
         ]);
 }(angular));
@@ -961,6 +963,7 @@
             function($scope, Roster) {
                 $scope.game = 'tenpin';
                 $scope.bowlers = Roster.bowlers;
+                $scope.numberOfBowlers = Roster.bowlers.length;
             }
         ]);
 }(angular));
@@ -1221,7 +1224,7 @@
                                 model.strikePercentage += gameObj[key].games[i].strikePercentage;
                                 model.sparePercentage += gameObj[key].games[i].sparePercentage;
                                 model.name = gameObj[key].name;
-                                model.gamesPlayed = gameObj[key].games.length;
+                                model.gamesPlayed += gameObj[key].games.worth;
                                 model.nineMade += gameObj[key].games[i].nineMade;
                                 model.nineCount += gameObj[key].games[i].nineCount;
                             }
@@ -1516,7 +1519,8 @@
                                 strikePercentage: $scope.stats.strikePercentage,
                                 score: $scope.stats.score,
                                 nineMade: $scope.nineMade,
-                                nineCount: $scope.nineCount
+                                nineCount: $scope.nineCount,
+                                worth: 1
                             }
                         })
                         .success(function() {
@@ -1600,7 +1604,8 @@
             return {
                 restrict: 'EA',
                 scope: {
-                    id: '@'
+                    id: '@',
+                    numberOfBowlers: '@'
                 },
                 templateUrl: 'templates/scorecard.html',
                 link: function($scope, $element, $attrs) {
@@ -1635,8 +1640,7 @@
                             if ($scope.rolls[$scope.rolls.length - 1] + $scope.rolls[$scope.rolls.length - 2] === 10) {
                                 if (!$scope.myRoster[$scope.id].spares) {
                                     $scope.myRoster[$scope.id].spares = 1;
-                                }
-                                else {
+                                } else {
                                     $scope.myRoster[$scope.id].spares++;
                                 }
                             }
@@ -1646,8 +1650,7 @@
                         if (pins === 9 && isSecondRoll()) {
                             if (!$scope.myRoster[$scope.id].nineCount) {
                                 $scope.myRoster[$scope.id].nineCount = 1;
-                            }
-                            else {
+                            } else {
                                 $scope.myRoster[$scope.id].nineCount++;
                             }
                         }
@@ -1656,8 +1659,7 @@
                             if (rolls[rolls.length - 1] === '9') {
                                 if (!$scope.myRoster[$scope.id].nineMade) {
                                     $scope.myRoster[$scope.id].nineMade = 1;
-                                }
-                                else {
+                                } else {
                                     $scope.myRoster[$scope.id].nineMade++;
                                 }
                             }
@@ -1665,8 +1667,7 @@
                         // get pincount
                         if (!$scope.myRoster[$scope.id].pinCount) {
                             $scope.myRoster[$scope.id].pinCount = pins;
-                        }
-                        else {
+                        } else {
                             $scope.myRoster[$scope.id].pinCount += pins;
                         }
 
@@ -1674,16 +1675,14 @@
                         // get roll count
                         if (!$scope.myRoster[$scope.id].rolls) {
                             $scope.myRoster[$scope.id].rolls = 1;
-                        }
-                        else {
+                        } else {
                             $scope.myRoster[$scope.id].rolls++;
                         }
                         // get gutters
                         if (pins === 0) {
                             if (!$scope.myRoster[$scope.id].gutterBalls) {
                                 $scope.myRoster[$scope.id].gutterBalls = 1;
-                            }
-                            else {
+                            } else {
                                 $scope.myRoster[$scope.id].gutterBalls++;
                             }
                         }
@@ -1692,8 +1691,7 @@
                             if (!$scope.myRoster[$scope.id].strikes) {
                                 $scope.myRoster[$scope.id].strikes = 1;
                                 totalFrames = totalFrames + 1 / 2;
-                            }
-                            else {
+                            } else {
                                 $scope.myRoster[$scope.id].strikes++;
                                 totalFrames = totalFrames + 1 / 2;
                             }
@@ -1721,6 +1719,7 @@
                         for (var id in $scope.myRoster) {
                             urlArr.push($http.post(apiToken + '/newgame/' + $scope.myRoster[id].id + '/' + Auth.user.id, {
                                 game: {
+                                    worth: 1 / $scope.numberOfBowlers,
                                     pinCount: $scope.myRoster[id].pinCount,
                                     rollCount: $scope.myRoster[id].rolls,
                                     gutterBalls: $scope.myRoster[id].gutterBalls,
@@ -1730,13 +1729,13 @@
                                     nineMade: $scope.myRoster[id].nineMade,
                                     nineCount: $scope.myRoster[id].nineCount,
                                     sparePercentage: $scope.myRoster[id].spares / ($scope.myRoster[id].rolls - $scope.myRoster[id].strikes) * 100,
-                                    strikePercentage: $scope.myRoster[id].strikes / $scope.myRoster[id].rolls * 100
+                                    strikePercentage: $scope.myRoster[id].strikes / $scope.myRoster[id].rolls * 100,
                                 }
                             }));
                         }
                         $q.all(urlArr).then(function(results) {
                             if (results) {
-                                $dialogs.notify('Success','Game results have been saved.');
+                                $dialogs.notify('Success', 'Game results have been saved.');
                             }
                         });
                     };

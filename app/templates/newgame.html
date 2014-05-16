@@ -1,3 +1,4 @@
+<!--10 Pin Game-->
 <div class="container" ng-show="game == 'tenpin'">
 	<multiselect class="input-lg" multiple="true" ms-selected ="There are {{selectedBowlers.length}} bowlers(s) selected"
         ng-model="selectedBowler" ms-header="Select Your Lineup"
@@ -15,6 +16,7 @@
 		</div>
 	</div>
 </div>
+<!--Baker Game-->
 <div class="container" ng-show="game == 'baker'">
 	<multiselect class="input-lg" multiple="true" ms-selected ="There are {{selectedBowlers.length}} bowlers(s) selected"
 		ng-model="selectedBowler" ms-header="Select Your Lineup"
@@ -27,6 +29,6 @@
 		</select>
 	</div>
 	<div class="score-cards">
-		<div score-card-baker data-id="{{bowlers[selectedBowler].id}}"></div>
+		<div score-card-baker data-id="{{bowlers[selectedBowler].id}}" number-of-bowlers="{{numberOfBowlers}}"></div>
 	</div>
 </div>
