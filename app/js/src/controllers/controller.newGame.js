@@ -7,6 +7,7 @@
             function($scope, Roster) {
                 $scope.game = 'tenpin';
                 $scope.bowlers = Roster.bowlers;
+                $scope.numberOfBowlers = Roster.bowlers.length;
             }
         ]);
 }(angular));

@@ -1,6 +1,6 @@
 {
   "name": "CollegeBowlingNation",
-  "version": "0.0.1-3",
+  "version": "0.0.1-2",
   "engines": {
     "node": "0.10.x"
   },

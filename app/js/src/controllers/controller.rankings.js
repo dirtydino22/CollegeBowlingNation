@@ -128,7 +128,7 @@
                                 model.strikePercentage += gameObj[key].games[i].strikePercentage;
                                 model.sparePercentage += gameObj[key].games[i].sparePercentage;
                                 model.name = gameObj[key].name;
-                                model.gamesPlayed = gameObj[key].games.length;
+                                model.gamesPlayed += gameObj[key].games.worth;
                                 model.nineMade += gameObj[key].games[i].nineMade;
                                 model.nineCount += gameObj[key].games[i].nineCount;
                             }

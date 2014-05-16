@@ -66,7 +66,8 @@
                                 strikePercentage: $scope.stats.strikePercentage,
                                 score: $scope.stats.score,
                                 nineMade: $scope.nineMade,
-                                nineCount: $scope.nineCount
+                                nineCount: $scope.nineCount,
+                                worth: 1
                             }
                         })
                         .success(function() {
