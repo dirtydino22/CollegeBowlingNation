@@ -1,0 +1,23 @@
+<div class="view container">
+	<h1 class="view-title"><small>new</small>Game</h1>
+	<p class="center-text">Choose players from your roster to create your lineup.</p>
+	<div class="container">
+		<div class="well form-group col-xs-12">
+					<h3>Roster</h3>
+
+					<select class="form-control" multiple ng-model="selectedBowlers" ng-change="handleLineup(selectedBowlers)" ng-options="bowler._id as bowler.name for bowler in roster">
+					</select>
+					<p>{{selectionMessage}}</p>
+				</div>
+				<div class="well col-xs-12">
+					<h3>Lineup <span class="badge" ng-show="lineupCount">{{lineupCount}} bowler<span ng-show="lineupCount > 1">s</span></span></h3>
+					<ul ng-show="roster">
+						<li data-ng-repeat="bowler in lineup">
+							<p>{{bowler.name}}</p>
+						</li>
+					</ul>
+				</div>
+				<a class="btn btn-primary" ui-sref="tenpin">Start Ten Pin</a>
+				<a class="btn btn-primary" ui-sref="baker">Start Baker</a>	
+	</div>
+</div>

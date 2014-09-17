@@ -1,0 +1,28 @@
+<div class="container">
+	<h1 class="view-title"><small>my</small>Roster</h1>
+	<p class="center-text">Manage your roster.</p>
+	<div class="new-roster-btn-group">
+		<button class="btn btn-default" ng-click="newBowler()">New Bowler</button>
+		<button class="btn btn-default" ng-click="newSeason()">New Season</button>
+	</div>
+	<div class="col-xs-12 col-md-8 col-md-offset-2">
+		<table class="table table-striped table-responsive table-condensed">
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+			<tr ng-repeat="bowler in roster">
+				<td class="col-xs-1">{{$index + 1}}</td>
+				<td class="col-xs-7">{{bowler.name}}</td>
+				<td class="col-xs-2">
+					<button ng-click="editBowler(bowler)" type="button" class="btn-icon text-primary glyphicon glyphicon-pencil pointer"></button>
+				</td>
+				<td class="col-xs-2">
+					<button ng-click="removeBowler(bowler)" class="btn-icon text-primary glyphicon glyphicon-remove pointer" style="margin-left: 0.8em;"></a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

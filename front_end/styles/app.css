@@ -1,0 +1,212 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 40px;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background-color: #b81e0d;
+  color: #F6F6F6;
+  padding-top: 0.7em;
+}
+
+.navi {
+  margin-bottom: 3em;
+}
+
+.view-wrap {
+  width: 100%;
+  min-height: 100%;
+  padding-bottom: 40px;
+}
+
+.pad-view {
+  padding-top: 2.5em;
+}
+
+.view-title {
+  text-align: center;
+  font-size: 5em;
+
+}
+
+
+/* Main */
+.about {
+  background-color: #333;
+  padding: 1.5em 0;
+  color: #F6F6F6;
+}
+
+.news-container {
+  min-height: 300px;
+}
+
+.news-title {
+  font-size: 5em;
+  text-align: center;
+}
+
+.news-list {
+  position: relative;
+  left: -1.2em;
+}
+
+
+/* Blog */
+.blog-title {
+  font-size: 5em;
+  text-align: center;
+  padding-top: 0.3em;
+}
+
+.post-title {
+  text-align: center;
+  margin-top: 1em;
+}
+
+/* Prospects */
+.form-btn {
+  margin-right:  1.1em;
+}
+
+.prospects-heading {
+  margin-bottom: 1em;
+}
+
+.prospect-btn-group {
+  position: relative;
+  left: 1.1em;
+}
+
+.prospect-navi-btn-group {
+  width: 118px;
+  margin: 0 auto;
+}
+
+h3 .badge {
+  position: relative;
+  top: -0.25em;
+}
+
+/* NewGame */
+.roster-panel {
+  margin-top: 2em;
+}
+
+/* myRoster */
+.new-roster-btn-group {
+  width: 215px;
+  margin: 0 auto;
+  padding-bottom: 1em;
+}
+
+/* Notifications */
+.notification-container {
+  position: fixed;
+  right: 1em;
+  top: 3.5em;
+  z-index: 1000;
+}
+
+.notification.ng-enter {
+  -moz-animation: fadeIn 0.5s;
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn 0.5s;
+}
+
+.notification.ng-leave {
+  -moz-animation: fadeOut 0.5s;
+  -webkit-animation: fadeOut 0.5s;
+  animation: fadeOut 0.5s;
+}
+
+/* ScoreCard */
+.baker-select {
+  width: 317px;
+  margin: 0 auto;
+  padding-right: 2px;
+}
+
+.pin-btn-group {
+  width: 317px;
+  position: absolute;
+  left: 50%;
+  margin-left: -158.5px;
+}
+
+.submit-btn-group {
+  width: 154px;
+  margin: 0 auto;
+}
+
+.table-score {
+  margin-top: 3em;
+}
+
+
+/* Helpers */
+/*
+.player-chart, #teamChart {
+  position: relative;
+  left: -0.5em;
+}
+
+.rankings-well {
+  max-height: 595px;
+}
+*/
+.admin-btn {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -20px;
+}
+.admin-btn-post {
+  position: absolute;
+  left: 50%;
+  margin-left: -45px;
+  margin-top: -20px;
+}
+.admin-table {
+  margin-top: 30px;
+}
+.btn-icon {
+  background: none;
+  border: none;
+}
+.errors {
+  color: red;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.btn-link {
+  color: #FCFCFC;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+/*
+@media screen and (min-width: 768px) {
+  .player-chart, #teamChart {
+    position: relative;
+    left: 5em;
+  }
+}
+*/

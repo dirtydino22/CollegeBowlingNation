@@ -1,0 +1,23 @@
+<div class="pad-view container-fluid">
+<form name="passwordForm" class="form-horizontal">
+					<div class="form-group">
+						<label for="oldpassword" class="col-sm-2 control-label">Old Password</label>
+						<div class="col-sm-10">
+							<input class="form-control" name="oldpassword" type="password" placeholder="Old Password" ng-model="pass.oldPassword">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="newpassword" class="col-sm-2 control-label">New Password</label>
+						<div class="col-sm-10">
+							<input class="form-control" name="newpassword" type="password" placeholder="New Password" ng-model="pass.newPassword">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+						<div class="col-sm-10">
+							<input class="form-control" name="confirm" type="password" placeholder="Confirm Password" ng-model="pass.confirm">
+						</div>
+					</div>
+					<button class="btn btn-primary pull-right" ng-click="updatePassword(pass)">Change Password</button>
+				</form>
+</div>

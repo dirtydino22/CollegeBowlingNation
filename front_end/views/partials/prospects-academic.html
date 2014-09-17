@@ -1,0 +1,93 @@
+<form name="prospectsAcademicForm" class="form-horizontal" novalidate>
+<h2 class="center-text prospects-heading">Academic Information</h2>
+<div class="form-group">
+						<label for="highschool" class="col-sm-3 control-label">Highschool</label>
+						<div class="col-sm-9">
+							<input type="text" name="highschool" class="form-control" ng-model="prospect.highschool" placeholder="High School" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="classification" class="col-sm-3 control-label">Classification</label>
+						<div class="col-sm-9">
+							<input type="text" name="classification" class="form-control" ng-model="prospect.classification" placeholder="Classification" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="schoolCity" class="col-sm-3 control-label">School's City</label>
+						<div class="col-sm-9">
+							<input type="text" name="schoolCity" class="form-control" ng-model="prospect.schoolCity" placeholder="School's City" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="schoolState" class="col-sm-3 control-label">School's State</label>
+						<div class="col-sm-9">
+							<input type="text" name="schoolState" class="form-control" ng-model="prospect.schoolState" placeholder="School's State" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="gpa" class="col-sm-3 control-label">GPA</label>
+						<div class="col-sm-9">
+							<input type="number" name="gpa" class="form-control" ng-model="prospect.gpa" placeholder="Highschool GPA" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="satActScore" class="col-sm-3 control-label">SAT &#47; ACT Score</label>
+						<div class="col-sm-9">
+							<input type="number" name="satActScore" class="form-control" ng-model="prospect.satActScore" placeholder="SAT &#47; ACT Score" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="schoolOfInterest" class="col-sm-3 control-label">University Of Interest</label>
+						<div class="col-sm-9">
+							<input type="text" name="schoolOfInterest" class="form-control" ng-model="prospect.schoolOfInterest" placeholder="University Of Interest" typeahead="university.name for university in universities | filter:$viewValue | limitTo:8" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="major" class="col-sm-3 control-label">Intended Major</label>
+						<div class="col-sm-9">
+							<input type="text" name="major" class="form-control" ng-model="prospect.major" placeholder="Intended Major" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">What is your admission status?</label>
+						<div class="btn-group prospect-btn-group">
+							<label class="btn btn-default" ng-model="prospect.admissionStatus" btn-radio="'Accepted'" uncheckable>Accepted</label>
+							<label class="btn btn-default" ng-model="prospect.admissionStatus" btn-radio="'Applied'" uncheckable>Applied</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Will you be a</label>
+						<div class="btn-group prospect-btn-group">
+							<label class="btn btn-default" ng-model="prospect.collegeClass" btn-radio="'Freshman'" uncheckable>New Freshman</label>
+							<label class="btn btn-default" ng-model="prospect.collegeClass" btn-radio="'Transfer'" uncheckable>Transfer Student</label>
+							<label class="btn btn-default" ng-model="prospect.collegeClass" btn-radio="'Graduate'" uncheckable>Graduate Student</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Have you applied for financial aid?</label>
+						<div class="btn-group prospect-btn-group">
+							<label class="btn btn-default" ng-model="prospect.financialAid" btn-radio="'Yes'" uncheckable>Yes</label>
+							<label class="btn btn-default" ng-model="prospect.financialAid" btn-radio="'No'" uncheckable>No</label>
+						</div>
+					</div>
+
+					
+					
+					<div class="form-group">
+						<a ui-sref="prospects.bowler" class="btn btn-primary pull-right prospects-btn" ng-disabled="isFormValid(prospectsAcademicForm)">Next <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+						<a ui-sref="prospects" class="btn btn-primary pull-right prospects-btn"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+					</div>
+
+					<p class="center-text">2 of 3</p>
+</form>

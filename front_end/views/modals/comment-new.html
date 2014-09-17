@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <button class="btn btn-defualt pull-right" type="button" ng-click="close()">&times;</button>
+    <h2>Add Comment</h2>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+    	<form name="commentForm">
+        <div class="form-group">
+            <label for="author" class="col-sm-2 control-label">Author</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="author" type="text" placeholder="Author" ng-model="comment.author">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="body" class="col-sm-2 control-label">Comment</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="body" placeholder="Comment" ng-model="comment.body"></textarea>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="createComment(comment)"><span class="glyphicon glyphicon-plus-sign"></span> Comment</button>
+</div>
