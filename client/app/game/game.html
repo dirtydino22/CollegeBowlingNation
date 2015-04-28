@@ -1,0 +1,20 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+    <div class="container">
+        <div ng-show="ctrl.isTenPin()">
+            <div tabset>
+                <div tab ng-repeat="tab in ctrl.tabs" heading="{{tab.name}}" active="tab.active">
+                    <div scorecard bowler-id="{{tab._id}}" is-tenpin="ctrl.isTenPin()" bowlers="ctrl.tabs" current-bowler-index="$index"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div ng-show="!ctrl.isTenPin()">
+            <div class="baker-select">
+                <select class="form-control" ng-model="ctrl.selectedBowler" ng-options="bowler.index as bowler.name for bowler in ctrl.lineup">
+                    <option value="">Choose a bowler</option>
+                </select>
+            </div>
+            <div scorecard bowler-id="{{ctrl.lineup[ctrl.selectedBowler]._id}}" game-type="baker" number-of-bowlers="{{ctrl.lineup.length}}"></div>
+        </div>
+    </div>
+<div ng-include="'components/footer/footer.html'"></div>

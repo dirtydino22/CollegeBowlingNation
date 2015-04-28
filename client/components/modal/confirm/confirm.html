@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <button class="btn btn-defualt pull-right" type="button" ng-click="ctrl.close()">&times;</button>
+    <h3>{{ctrl.title}}</h3>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+    	<p>{{ctrl.message}}</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ctrl.close()">Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="ctrl.confirm()">Confirm</button>
+</div>

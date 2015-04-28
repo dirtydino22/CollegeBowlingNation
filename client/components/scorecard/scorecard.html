@@ -1,0 +1,48 @@
+<div class="pad-tab">
+    <div class="container">
+        <div class="btn-group pin-btn-group">
+            <button class="btn btn-primary" ng-repeat="pin in pins" ng-click="addRoll(pin)" ng-disabled="disabled(pin)">{{pin}}</button>
+        </div>
+
+        <div class="scorecard-actions-btn-group">
+            <button class="btn btn-default" ng-click="goBackOne()" ng-disabled="rollCount == 0">Back</button>
+            <button class="btn btn-default" ng-click="reset()" ng-disabled="rollCount == 0">Reset</button>
+        </div>
+
+        <table class="scorecard-table table table-responsive">
+            <tr>
+                <td ng-repeat="frame in frames" class="frame">{{$index + 1}}</td>
+                <td class="frame">10</td>
+            </tr>
+            <tr>
+                <td ng-repeat="frame in frames" class="roll-frame">{{rollDisplay[2 * (frame - 1)]}} {{rollDisplay[2 * (frame - 1) + 1]}}</td>
+                <td class="roll-frame">{{rollDisplay[18]}} {{rollDisplay[19]}} {{rollDisplay[20]}}</td>
+            </tr>
+            <tr>
+                <td ng-repeat="frame in frames" class="frame">{{frameScores[frame - 1]}}</td>
+                <td class="frame">{{frameScores[9]}}</td>
+            </tr>
+        </table>
+        
+        <div class="container-fluid">
+        <h3>Results</h3>
+        <small ng-show="!isGameOver">Game still in play.</small>
+        <div class="scorecard-results" ng-show="isGameOver">
+            <ul>
+                <li>Score: {{results.score}}</li>
+                <li>Total Pins: {{results.pinTotal}}</li>
+                <li>First Ball Count {{results.firstBallCount}}</li>
+                <li>Strikes {{results.strikes}}</li>
+                <li>Strike Percentage {{results.strikePercentage}}</li>
+                <li>Spares {{results.spares}}</li>
+                <li>Spare Percentage {{results.sparePercentage}}</li>
+            </ul>
+            {{results}}
+        </div>
+        
+        <div class="pull-right">
+            <button class="btn btn-success" ng-click="submitGameResults()" ng-disabled="!isGameSubmitable()">Submit Results</button>
+        </div>
+        </div>
+    </div>
+</div>

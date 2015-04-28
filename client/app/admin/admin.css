@@ -1,0 +1,18 @@
+.admin-btn {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -20px;
+}
+.admin-btn-post {
+  position: absolute;
+  left: 50%;
+  margin-left: -45px;
+  margin-top: -20px;
+}
+.admin-table {
+  margin-top: 30px;
+}
+.pad {
+  padding-top: 2.5em;
+}

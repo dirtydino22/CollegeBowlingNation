@@ -1,0 +1,13 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container">
+	<h2 class="view-title text-center"><small>my</small>Account</h2>
+	<p class="text-center">Manage your account information.</p>
+	<div class="container">
+		<tabset justified="true">
+			<tab ng-repeat="tab in ctrl.tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+				<div ng-include="tab.template"></div>
+			</tab>
+		</tabset>
+	</div>
+</div>
+<div ng-include="'components/footer/footer.html'"></div>

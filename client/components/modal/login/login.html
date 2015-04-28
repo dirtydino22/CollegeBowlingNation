@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <button type="button" ng-click="ctrl.close()" class="close">&times;</button>
+  <h2 class="modal-title">{{ ctrl.title }}</h2>
+</div>
+<div class="modal-body">
+	<!-- Login Form -->
+	<form name="loginForm" class="form-horizontal" ng-show="ctrl.loginMode" novalidate>
+		<div class="form-group">
+			<label for="useremail" class="col-sm-2 control-label">Email</label>
+			<div class="col-sm-10">
+				<input type="email" name="userEmail" class="form-control" ng-model="ctrl.user.email" placeholder="Email" ng-minlength="3" required/>
+			</div>
+		</div>
+		
+
+		<div class="form-group">
+			<label for="userpassword" class="col-sm-2 control-label">Password</label>
+			<div class="col-sm-10">
+				<input type="password" name="userpassword" class="form-control" ng-model="ctrl.user.password" placeholder="Password" data-ng-minlength="3" required />
+				
+			</div>
+		</div>
+	</form>
+
+	<!-- Forgot Form -->
+	<form name="forgotForm" class="form-horizontal" ng-hide="ctrl.loginMode" novalidate>
+		<p class="text-center">Enter your email and we will send you a reset link.</p>
+		<div class="form-group">
+			<label for="email" class="col-sm-2 control-label">Email</label>
+			<div class="col-sm-10">
+				<input type="email" name="email" class="form-control" ng-model="ctrl.forgot" placeholder="Email" required/>
+			</div>
+		</div>
+	</form>
+
+	<p ng-show="ctrl.errors.other && ctrl.loginMode" class="pull-right errors">{{ctrl.errors.other}}</p>
+	<p ng-show="ctrl.errors.reset && !ctrl.loginMode" class="pull-right errors">{{ctrl.errors.reset}}</p>
+</div>
+<div class="modal-footer">	
+	<button class="btn btn-primary" type="button" ng-show="ctrl.loginMode" ng-click="ctrl.login(ctrl.user)" ng-disabled="loginForm.$invalid">Login</button>
+	<button class="btn pull-left text-primary" type="button" ng-show="ctrl.loginMode" ng-click="ctrl.loginMode = !ctrl.loginMode">Forgot password?</button>
+	<button class="btn btn-primary" type="button" ng-hide="ctrl.loginMode" ng-click="ctrl.forgotPassword(ctrl.forgot)" ng-disabled="forgotForm.$invalid">Reset Password</button>
+</div>

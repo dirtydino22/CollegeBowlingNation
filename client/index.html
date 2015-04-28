@@ -1,0 +1,142 @@
+<!doctype html>
+<html manifest="app.appcache">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="/">
+    <title>College Bowling Nation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(client) app/vendor.css -->
+      <!-- bower:css -->
+      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+      <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+      <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css" />
+      <link rel="stylesheet" href="bower_components/ng-sortable/dist/ng-sortable.css" />
+      <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,client}) app/app.css -->
+    <link rel="stylesheet" href="app/app.css">
+      <!-- injector:css -->
+      <link rel="stylesheet" href="app/account/account.css">
+      <link rel="stylesheet" href="app/admin/admin.css">
+      <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/main/main.css">
+      <link rel="stylesheet" href="app/newgame/newgame.css">
+      <link rel="stylesheet" href="app/roster/roster.css">
+      <link rel="stylesheet" href="components/footer/footer.css">
+      <link rel="stylesheet" href="components/modal/modal.css">
+      <link rel="stylesheet" href="components/modal/team-rankings/team-rankings.css">
+      <link rel="stylesheet" href="components/navbar/navbar.css">
+      <link rel="stylesheet" href="components/notification/notification.css">
+      <link rel="stylesheet" href="components/scorecard/scorecard.css">
+      <!-- endinjector -->
+    <!-- endbuild -->
+  </head>
+  <body ng-app="app" id="ng-app">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div ng-include="'components/notification/notification.html'"></div>
+    <div ui-view=""></div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+    <script src="socket.io/socket.io.js"></script>
+    <!-- build:js(client) app/vendor.js -->
+      <!-- bower:js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+      <script src="bower_components/angular-socket-io/socket.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/angular-animate/angular-animate.js"></script>
+      <script src="bower_components/angular-growl-notifications/dist/angular-growl-notifications.js"></script>
+      <script src="bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+      <script src="bower_components/Chart.js/Chart.min.js"></script>
+      <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+      <script src="bower_components/ng-sortable/dist/ng-sortable.js"></script>
+      <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,client}) app/app.js -->
+        <script src="app/app.js"></script>
+          <!-- injector:js -->
+          <script src="app/account/account.controller.js"></script>
+          <script src="app/account/account.js"></script>
+          <script src="app/admin/admin.controller.js"></script>
+          <script src="app/admin/admin.js"></script>
+          <script src="app/blog/blog.controller.js"></script>
+          <script src="app/blog/blog.js"></script>
+          <script src="app/game/game.controller.js"></script>
+          <script src="app/game/game.js"></script>
+          <script src="app/main/main.controller.js"></script>
+          <script src="app/main/main.js"></script>
+          <script src="app/newgame/newgame.controller.js"></script>
+          <script src="app/newgame/newgame.js"></script>
+          <script src="app/prospects/prospects.controller.js"></script>
+          <script src="app/prospects/prospects.js"></script>
+          <script src="app/rankings/rankings.controller.js"></script>
+          <script src="app/rankings/rankings.js"></script>
+          <script src="app/roster/roster.controller.js"></script>
+          <script src="app/roster/roster.js"></script>
+          <script src="components/auth-interceptor/auth-interceptor.service.js"></script>
+          <script src="components/auth/auth.service.js"></script>
+          <script src="components/auth/tempuser.service.js"></script>
+          <script src="components/auth/user.service.js"></script>
+          <script src="components/blog/blog.service.js"></script>
+          <script src="components/calculator/calculator.service.js"></script>
+          <script src="components/countries/countries.service.js"></script>
+          <script src="components/frame-scores/frame-scores.filter.js"></script>
+          <script src="components/lineup/lineup.service.js"></script>
+          <script src="components/local-storage/local-storage.service.js"></script>
+          <script src="components/mail/mail.service.js"></script>
+          <script src="components/modal/bowler/bowler.controller.js"></script>
+          <script src="components/modal/confirm/confirm.controller.js"></script>
+          <script src="components/modal/contact/contact.controller.js"></script>
+          <script src="components/modal/login/login.controller.js"></script>
+          <script src="components/modal/modal.service.js"></script>
+          <script src="components/modal/news/news.controller.js"></script>
+          <script src="components/modal/newseason/newseason.controller.js"></script>
+          <script src="components/modal/post/post.controller.js"></script>
+          <script src="components/modal/signup/signup.controller.js"></script>
+          <script src="components/modal/team-rankings/team-rankings.controller.js"></script>
+          <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+          <script src="components/navbar/navbar.controller.js"></script>
+          <script src="components/network/network.service.js"></script>
+          <script src="components/news/news.service.js"></script>
+          <script src="components/notification/notification.controller.js"></script>
+          <script src="components/notification/notification.service.js"></script>
+          <script src="components/prospects/prospects.service.js"></script>
+          <script src="components/request-handler/request-handler.service.js"></script>
+          <script src="components/roll-display/roll-display.filter.js"></script>
+          <script src="components/scorecard/scorecard.directive.js"></script>
+          <script src="components/socket/socket.service.js"></script>
+          <script src="components/team/team.service.js"></script>
+          <script src="components/universities/universities.service.js"></script>
+          <!-- endinjector -->
+        <!-- endbuild -->
+</body>
+</html>

@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container">
+    <h2 class="text-center view-title"><small>cbn</small>Rankings</h2>
+    <p class="text-center">Select a team to see stats</p>
+    <div class="well">
+
+    <table ng-if="dataLoaded" class="table table-responsive table-striped" st-table="teams">
+        <thead>
+            <tr>
+                <th class="text-center" st-sort="university">University</th>
+                <th class="text-center" st-sort="getters.gp">Games Played</th>
+                <th class="text-center" st-sort="getters.avg">Team Average</th>
+                <th class="text-center" st-sort="getters.bavg">Baker Average</th>
+                <th class="text-center" st-sort="getters.stp">Strike Percentage</th>
+                <th class="text-center" st-sort="getters.spp">Spare Percentage</th>
+                <th class="text-center" st-sort="getters.fba">First Ball Average</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="team in teams" ng-click="openTeamRankingsModal(team)" class="text-center">
+                <td>{{team.university}}</td>
+                <td>{{team.teamStats.gamesPlayed}}</td>
+                <td>{{team.teamStats.average}}</td>
+                <td>{{team.teamStats.bakerAverage}}</td>
+                <td>{{team.teamStats.strikePercentage}}</td>
+                <td>{{team.teamStats.sparePercentage}}</td>
+                <td>{{team.teamStats.averageFirstBallCount}}</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</div>
+<div ng-include="'components/footer/footer.html'"></div>

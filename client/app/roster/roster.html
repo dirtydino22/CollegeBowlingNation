@@ -1,0 +1,34 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="view container">
+    <h2 class="view-title">
+        <small>my</small>Roster</h2>
+    <p class="text-center">Manage your roster.</p>
+    <div class="new-roster-btn-group">
+        <button class="btn btn-default" ng-click="ctrl.openCreateBowlerModal('createBowler')">New Bowler</button>
+        <button class="btn btn-default" ng-click="ctrl.openNewSeasonModal()">New Season</button>
+    </div>
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+        <table class="table table-striped table-responsive table-condensed">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr ng-repeat="bowler in ctrl.roster">
+                <td class="col-xs-1">{{$index + 1}}</td>
+                <td class="col-xs-7">{{bowler.name}}</td>
+                <td class="col-xs-2">
+                    <button ng-click="ctrl.openEditBowlerModal('editBowler', bowler)" type="button" class="btn-icon text-primary glyphicon glyphicon-pencil pointer"></button>
+                </td>
+                <td class="col-xs-2">
+                    <button ng-click="ctrl.openRemoveBowlerModal('confirmBowlerRemoval', bowler)" class="btn-icon text-primary glyphicon glyphicon-remove pointer">
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

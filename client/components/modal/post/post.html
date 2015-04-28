@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <button class="btn btn-defualt pull-right" type="button" ng-click="ctrl.close()">&times;</button>
+    <h2 ng-show="ctrl.type == 'create'">Create Post</h2>
+    <h2 ng-hide="ctrl.type == 'create'">Edit Post</h2>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="newPostForm">
+        <div class="form-group">
+            <label for="author" class="col-sm-2 control-label">Author</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="author" type="text" placeholder="Author" ng-model="ctrl.post.author">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="title" type="text" placeholder="Title" ng-model="ctrl.post.title">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="post" class="col-sm-2 control-label">Post</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="post" placeholder="Post" ng-model="ctrl.post.body" rows="8"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ctrl.createPost(ctrl.post)" ng-show="ctrl.type == 'create'">
+        Post
+    </button>
+    <button class="btn btn-primary" type="button" ng-click="ctrl.updatePost(ctrl.post)" ng-hide="ctrl.type == 'create'">
+        Edit
+    </button>
+</div>

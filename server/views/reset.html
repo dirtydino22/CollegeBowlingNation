@@ -1,0 +1,78 @@
+<!doctype html>
+<html ng-app="app" id="ng-app" lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta name="fragment" content="!">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>College Bowling Nation - Password Reset</title>
+    <meta name="author" content="College Bowling Nation">
+    <meta name="description" content="A colligiate bowling site.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" />
+</head>
+
+<body>
+    <div class="container" ng-controller="ResetCtrl">
+        <h1 class="text-center">Reset your password</h1>
+        <hr />
+        <form name="resetForm" novalidate class="form-horizontal">
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">New Password</label>
+                <div class="col-sm-10">
+                    <input type="password" name="password" class="form-control" ng-model="pass.password" placeholder="New Password" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirm" class="col-sm-2 control-label">Confirm</label>
+                <div class="col-sm-10">
+                    <input type="password" name="confirm" class="form-control" ng-model="pass.confirm" placeholder="Confirm" required/>
+                </div>
+            </div>
+            <p>{{errors}}</p>
+            <button data-ng-click="resetPassword(pass)" class="btn btn-primary pull-right" type="button" ng-disabled="resetForm.$invalid">Reset</button>
+        </form>
+    </div>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    
+    <script>
+    /*global angular*/
+    (function() {
+        'use strict';
+        angular.module('app', ['ui.bootstrap'])
+            .controller('ResetCtrl', ['$scope', '$http', '$location',
+                function($scope, $http, $location) {
+                    $scope.pass = {};
+                    $scope.errors = '';
+
+                    $scope.resetPassword = function(pass) {
+                    	var token = window.location.pathname.substr(11);
+
+                    	if (pass.password !== pass.confirm) {
+                    		$scope.errors = 'Passwords do not match';
+                    		return false;
+                    	}
+
+                    	$http.post('/api/reset/', {
+                    		token: token,
+                    		password: $scope.pass.password
+                    	},
+                    		function() {
+                    			$location.path('/');
+                    		},
+                    		function() {
+                    			//error
+                    		});
+                    };
+                }
+            ]);
+    }());
+    </script>
+</body>
+<html>

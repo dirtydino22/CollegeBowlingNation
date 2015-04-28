@@ -1,0 +1,34 @@
+.growl-notifications {
+	position: fixed;
+	top: 70px;
+	right: 25px;
+    list-style-type: none;
+}
+
+.growl-notification {
+    position: relative;
+}
+
+.growl-notification.fading.ng-move{
+    opacity: 0;
+    top: 15px;
+    -webkit-transition: 1s linear all; /* Safari/Chrome */
+    transition: 0.5s linear all; /* All other modern browsers and IE10+ */
+}
+
+.growl-notification.fading.ng-move.ng-move-active {
+    opacity: 1;
+    top: 0;
+}
+
+.growl-notification.fading.ng-leave {
+    opacity: 1;
+    top: 0;
+    -webkit-transition: 1s linear all; /* Safari/Chrome */
+    transition: 0.5s linear all; /* All other modern browsers and IE10+ */
+}
+
+.growl-notification.fading.ng-leave.ng-leave-active {
+    opacity: 0;
+    top: 15px;
+}

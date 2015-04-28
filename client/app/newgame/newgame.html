@@ -1,0 +1,39 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="view container">
+    <h1 class="view-title">
+        <small>new</small>Game</h1>
+    <p class="text-center">Choose players from your roster to create your lineup.</p>
+    <div class="container">
+        <div  ng-hide="ctrl.bowlersSelectedForLineup">
+        <div class="well form-group col-xs-12">
+            <h3 class="text-center">Roster</h3>
+            <select class="form-control" style="overflow: scroll; min-height: 150px;" multiple ng-model="ctrl.selectedBowlers" ng-change="ctrl.updateLineup(ctrl.selectedBowlers)" ng-options="bowler._id as bowler.name for bowler in ctrl.roster">
+            </select>
+            <p>{{ctrl.selectionMessage}}</p>
+        </div>
+        <div class="pull-right">
+        	<a class="btn btn-primary" ng-disabled="!ctrl.areEnoughBowlersSelected()" ng-click="ctrl.bowlersSelectedForLineup = !ctrl.bowlersSelectedForLineup">Set Lineup Order</a>
+        </div>
+        </div>
+        
+        <div  ng-show="ctrl.bowlersSelectedForLineup">
+        <div class="well col-xs-12">
+            <h3 class="text-center">Lineup
+                <span class="badge">{{ctrl.lineupCount}} bowler's selected
+                </span>
+            </h3>
+            <ul class="lineup list-group" as-sortable="ctrl.dragControlListeners" ng-model="ctrl.lineup">
+                <li class="list-group-item" data-ng-repeat="bowler in ctrl.lineup" as-sortable-item>
+                    <p as-sortable-item-handle>{{bowler.name}}</p>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="pull-right">
+        	<a class="btn btn-primary" ng-href="/tenpin">Start Ten Pin</a>
+        	<a class="btn btn-primary" ng-href="/baker">Start Baker</a>
+        </div>
+        </div>
+    </div>
+</div>
+<div ng-include="'components/footer/footer.html'"></div>

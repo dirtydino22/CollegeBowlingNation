@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <button class="close" type="button" ng-click="ctrl.close()">&times;</button>
+    <h2 ng-show="ctrl.type == 'create'">Create a bowler</h2>
+    <h2 ng-hide="ctrl.type == 'create'">Edit a bowler</h2>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+    	<form name="bowlerForm">
+            <div class="form-group">
+            <label for="bowlerName" class="col-sm-2 control-label">Bowler's Name</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="bowlerName" type="text" placeholder="Bowler's Name" ng-model="ctrl.bowler.name" required>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="ctrl.close()">Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="ctrl.createBowler(ctrl.bowler.name)" ng-show="ctrl.type == 'create'" ng-disabled="bowlerForm.$invalid">Create</button>
+    <button class="btn btn-primary" type="button" ng-click="ctrl.editBowler(ctrl.bowler)" ng-hide="ctrl.type == 'create'" ng-disabled="bowlerForm.$invalid">Edit</button>
+</div>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html ng-app="app" id="ng-app" lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta name="fragment" content="!">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>College Bowling Nation - Setup</title>
+    <meta name="author" content="College Bowling Nation">
+    <meta name="description" content="A colligiate bowling site.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootswatch.css" />
+</head>
+
+<body>
+    <div class="container" ng-controller="SetupCtrl">
+        <h1 class="text-center">Admin Setup</h1>
+        <hr />
+        <form name="registrationForm" novalidate class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Full Name</label>
+                <div class="col-sm-10">
+                    <input type="text" name="name" class="form-control" ng-model="user.name" placeholder="Full Name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Email" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="university" class="col-sm-2 control-label">University</label>
+                <div class="col-sm-10">
+                    <input type="text" name="university" class="form-control" ng-model="user.university" placeholder="University" typeahead="university.name for university in universities | filter:$viewValue | limitTo:8" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Password" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+                <div class="col-sm-10">
+                    <input type="password" name="confirm" class="form-control" ng-model="user.confirm" placeholder="Confirm Password" />
+                </div>
+            </div>
+            <p ng-model="feedback">{{feedback}}</p>
+            <button data-ng-click="createAccount(user)" class="btn btn-primary pull-right" type="button" ng-disabled="!(registrationForm.$dirty && registrationForm.$valid)">Setup</button>
+        </form>
+    </div>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    
+    <script>
+    /*global angular*/
+    (function() {
+        'use strict';
+        angular.module('app', ['ui.bootstrap'])
+            .controller('SetupCtrl', ['$scope', '$http', 'Universities',
+                function($scope, $http, Universities) {
+                    $scope.universities = Universities.get();
+                    $scope.feedback = '';
+                    
+                    $scope.createAccount = function(user) {
+                        if (user.password !== '' && user.password === user.confirm) {
+                            $scope.feedback = 'Creating Admin';
+                            $http.post('/api/setup', user, function(res) {
+                                $scope.feedback = 'Setup Complete.';
+                            });
+                        }
+                        else {
+                            $scope.feedback = 'Passwords do not match.';
+                        }
+                    };
+                }
+            ]);
+    }());
+    </script>
+    <script src="./components/universities/universities.service.js"></script>
+</body>
+<html>

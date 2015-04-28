@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <button class="btn btn-defualt pull-right" type="button" ng-click="ctrl.close()">&times;</button>
+    <h2>Start A New Season</h2>
+</div>
+<div class="modal-body">
+    <p class="text-center">select any bowlers you would like to keep.</p>
+    <select class="form-control" multiple ng-model="ctrl.selectedBowlers" ng-change="ctrl.updateRoster(ctrl.selectedBowlers)" ng-options="bowler as bowler.name for bowler in ctrl.roster">
+                    </select>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ctrl.createNewSeason()">Create</button>
+</div>

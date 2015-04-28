@@ -1,0 +1,44 @@
+.frame {
+    background: black;
+    height: 37px;
+}
+
+.roll-frame {
+    background: ccc;
+    border: 1px solid black;
+    height: 37px;
+    padding-right: -1px;
+}
+
+.roll-frame:first-child {
+    border-left: none;
+}
+
+.roll-frame:last-child {
+    border-right: none;
+}
+
+.pad-tab {
+    margin-top: 1.5em;
+}
+
+.pin-btn-group {
+    width: 370px;
+    position: absolute;
+    left: 50%;
+    margin-left: -185px;
+}
+
+.scorecard-actions-btn-group {
+    width: 124px;
+    margin-top: 3.5em;
+    position: absolute;
+    left: 50%;
+    margin-left: -62px;
+    margin-bottom: 1.5em;
+}
+
+.scorecard-table {
+    margin-top: 7em;
+    text-align: center;
+}

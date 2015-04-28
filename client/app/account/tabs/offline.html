@@ -1,0 +1,17 @@
+<div class="pad container-fluid">
+    <form name="offlineForm" class="form-horizontal">
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">Offline Password</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="newpassword" type="password" placeholder="New Password" ng-model="ctrl.password.offlinePassword" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirm" class="col-sm-2 control-label">Confirm Password</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="confirm" type="password" placeholder="Confirm Password" ng-model="ctrl.password.confirm" required>
+            </div>
+        </div>
+        <button class="btn btn-primary pull-right" ng-click="ctrl.createOfflineToken(ctrl.password.offlinePassword)" ng-disabled="offlineForm.$invalid || ctrl.password.offlinePassword != ctrl.password.confirm">Get Token</button>
+    </form>
+</div>

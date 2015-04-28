@@ -1,0 +1,48 @@
+<form name="prospectsBowlerForm" class="form-horizontal" novalidate>
+    <h2 class="center-text prospects-heading">Bowling Information</h2>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Which hand do you bowl with?</label>
+        <div class="btn-group prospect-btn-group">
+            <label class="btn btn-default" ng-model="ctrl.prospect.bowlingHand" btn-radio="'Left'" uncheckable>Left</label>
+            <label class="btn btn-default" ng-model="ctrl.prospect.bowlingHand" btn-radio="'Right'" uncheckable>Right</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="currentAverage" class="col-sm-3 control-label">Current Average</label>
+        <div class="col-sm-9">
+            <input type="number" name="currentAverage" class="form-control" ng-model="ctrl.prospect.currentAverage" placeholder="Current Average" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="highAverage" class="col-sm-3 control-label">High Average</label>
+        <div class="col-sm-9">
+            <input type="number" name="highAverage" class="form-control" ng-model="ctrl.prospect.highAverage" placeholder="High Average" />
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="coach" class="col-sm-3 control-label">Coach you would like to contact</label>
+        <div class="col-sm-9">
+            <input type="text" name="coach" class="form-control" ng-model="ctrl.prospect.coach" placeholder="Coach you would like to contact" typeahead="coach.email as coach.label for coach in ctrl.coaches | filter:$viewValue | limitTo:8" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="message" class="col-sm-3 control-label">Message for the coach</label>
+        <div class="col-sm-9">
+            <textarea name="message" class="form-control" ng-model="ctrl.prospect.message" placeholder="Message" rows="6"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary pull-right prospects-btn" type="button" ng-click="ctrl.submitProspectForm(prospect)" ng-disabled="">Submit</button>
+
+        <a ui-sref="prospects.academic" class="btn btn-primary pull-right prospects-btn"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+    </div>
+
+    <p class="center-text">3 of 3</p>
+</form>

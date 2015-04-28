@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <button class="close" type="button" ng-click="ctrl.close()">&times;</button>
+    <h2>{{ctrl.team.university}} Stats</h2>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+      <div ng-show="!ctrl.bowlerSelected">
+        <canvas id="team-chart" class="chart chart-bar" data="ctrl.teamData" labels="ctrl.teamLabels"></canvas>
+        <h4>Roster</h4>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="bowler in ctrl.bowlers" ng-click="ctrl.showBowlerStats(bowler)">{{bowler.name}} <i class="fa fa-angle-right pull-right"></i></li>
+        </ul>
+      </div>
+      <div ng-show="ctrl.bowlerSelected">
+        <h3>{{ctrl.bowlerSelected.name}}</h3>
+        <canvas id="bowler-chart" class="chart chart-bar" data="ctrl.bowlerData" labels="ctrl.bowlerLabels"></canvas>
+        <button class="btn btn-default pull-right" ng-click="ctrl.hideBowlerStats()">Back</button>
+      </div>
+      </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="ctrl.close()">Close</button>
+</div>
