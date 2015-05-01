@@ -28,30 +28,6 @@
     "socketio-jwt": "^2.0.2",
     "static-favicon": "~1.0.1"
   },
-  "bundleDependencies": [
-    "async",
-    "body-parser",
-    "composable-middleware",
-    "compression",
-    "connect-mongo",
-    "cookie-parser",
-    "ejs",
-    "errorhandler",
-    "express",
-    "express-jwt",
-    "express-session",
-    "jsonwebtoken",
-    "lodash",
-    "method-override",
-    "mongoose",
-    "morgan",
-    "nodemailer",
-    "passport",
-    "passport-local",
-    "socket.io",
-    "socketio-jwt",
-    "static-favicon"
-  ],
   "engines": {
     "node": ">=0.10.0"
   },
